@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Fourplaces.Views.Inscription"
+             xmlns:mvvm="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms"
+             >    
+    
+    <ContentPage.Content>
+        <StackLayout>
+        
+            <Label Text="S'inscrire"/>
+            <Entry Text="{Binding EMAIL}" Placeholder="login" />
+            <Entry Text="{Binding FNAME}" Placeholder="First name" />
+            <Entry Text="{Binding LNAME}" Placeholder="Last name" />
+            <Entry Text="{Binding MDP}" Placeholder="password" />
+            <Button Text="OK" Command="{Binding SEND}"/>
+            
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</mvvm:BaseContentPage>

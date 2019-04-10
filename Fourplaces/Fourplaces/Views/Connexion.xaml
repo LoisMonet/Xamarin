@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Fourplaces.Views.Connexion"
+             xmlns:mvvm="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms"
+             >    
+    
+    <ContentPage.Content>
+        <StackLayout>
+        
+            <Label Text="Se connecter"/>
+            <Entry Text="{Binding LOGIN}" Placeholder="login" />
+            <Entry Text="{Binding MDP}" Placeholder="mdp" />
+            <Button Text="OK" Command="{Binding SEND}"/>
+            
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</mvvm:BaseContentPage>

@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
+    <PackageReference Include="Storm.Mvvm.Forms" Version="2.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="3.6.0.264807" />
+    <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
+    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+    <Folder Include="Models\" />
+    <Folder Include="Models\Dtos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Views\HomeView.xaml.cs" />
+    <Compile Remove="Models\AuthenticationToken.cs" />
+    <Compile Remove="Models\Comment.cs" />
+    <Compile Remove="Models\ImageModel.cs" />
+    <Compile Remove="Models\Place.cs" />
+    <Compile Remove="Models\User.cs" />
+    <Compile Remove="Models\CreateCommentRequest.cs" />
+    <Compile Remove="Models\ImageItem.cs" />
+    <Compile Remove="Models\LoginRequest.cs" />
+    <Compile Remove="Models\LoginResult.cs" />
+    <Compile Remove="Models\RefreshRequest.cs" />
+    <Compile Remove="Models\RegisterRequest.cs" />
+    <Compile Remove="Models\UpdatePasswordRequest.cs" />
+    <Compile Remove="Models\UpdateProfileRequest.cs" />
+    <Compile Remove="Models\UserItem.cs" />
+    <Compile Remove="Models\AuthenticationToken.cs" />
+    <Compile Remove="Models\ImageModel.cs" />
+    <Compile Remove="Views\ListViewTemplate.xaml.cs" />
+    <Compile Remove="Views\Test.xaml.cs" />
+    <Compile Remove="Views\MapView.xaml.cs" />
+    <Compile Remove="Views\MyPage.xaml.cs" />
+    <Compile Remove="Views\Connexion.xaml %28copie%29.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\Page1.xaml.cs">
+      <DependentUpon>PlaceItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CreatePlace.xaml.cs">
+      <DependentUpon>CreatePlace.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\ListViewTemplate.xaml" />
+    <EmbeddedResource Remove="Views\Test.xaml" />
+    <EmbeddedResource Remove="Views\MapView.xaml" />
+    <EmbeddedResource Remove="Views\Connexion %28copie%29.xaml" />
+  </ItemGroup>
+</Project>

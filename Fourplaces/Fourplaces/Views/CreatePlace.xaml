@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Fourplaces.Views.CreatePlace"
+             xmlns:mvvm="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms"
+             >
+    <ContentPage.Content>
+        <StackLayout>
+        
+            <Label Text="CreatePlace"/>
+            <Entry Text="{Binding NOM}" Placeholder="nom lieu please" />
+            <Entry Text="{Binding DESCRIPTION}" Placeholder="description please" />
+            <Entry Text="{Binding IMAGE}" Placeholder="image please" />
+            <Entry Text="{Binding LATITUDE}" Placeholder="longitude please?" />
+            <Entry Text="{Binding LONGITUDE}" Placeholder="longitude please?" />
+            <StackLayout Orientation="Horizontal">
+                  <Button Text="Photo Camera OK" Command="{Binding SENDWPICTURE}"/>
+                  <Button Text="Photo Gallerie OK" Command="{Binding SENDWGALLERY}"/>
+            </StackLayout>
+            
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+</mvvm:BaseContentPage>

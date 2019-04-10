@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                      x:Class="Fourplaces.Views.MainView"
+                      xmlns:mvvm="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms"
+                      x:Name="mainview"
+                      >
+    <ContentPage.ToolbarItems>
+          <ToolbarItem Name="Ajouter Lieux" Command="{Binding ADDPLACE}"  Order="Primary" Priority="0" />
+          <ToolbarItem Name="Connexion" Command="{Binding CONNEXION}"  Order="Primary" Priority="1" />
+          <ToolbarItem Name="Inscription" Command="{Binding INSCRIPTION}"  Order="Primary" Priority="2" />
+          <ToolbarItem Name="MonCompte" Command="{Binding MONCOMPTE}"  Order="Primary" Priority="3" />
+    </ContentPage.ToolbarItems>
+    
+    <StackLayout>
+        <Label Text="FourPlaces"/>
+        
+        <ListView ItemsSource="{Binding LPIS}"
+                  HasUnevenRows="true"
+                  SelectedItem="{Binding PISS}">
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                   <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+<!--                            <Image Source="{Binding ImageId,StringFormat='https://td-api.julienmialon.com/images/{0}'}"> </Image>
+-->                         <!--<Image Source="{Binding Source={x:Reference mainview}, Path=BindingContext.ID,StringFormat='https://td-api.julienmialon.com/images/{0}'}"> </Image>
+   -->                      <Image Source="{Binding SOURCEIMAGE}" WidthRequest="80" HeightRequest="80"/>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Title, StringFormat='titles:{0}'}"/>
+                                <!--<Label Text="{Binding Id, StringFormat='Id:{0}'}"/>
+                                <Label Text="{Binding ImageId, StringFormat='ImageId:{0}'}"/>
+                             --><Label Text="{Binding Description  , StringFormat='description:{0}'}" LineBreakMode="TailTruncation" MaxLines="3"/>
+                        
+                            </StackLayout>
+                       </StackLayout>
+                    </ViewCell>
+              
+               </DataTemplate>
+            </ListView.ItemTemplate>   
+        </ListView>   
+
+    </StackLayout>
+    
+        
+    
+     
+    
+    
+</mvvm:BaseContentPage>

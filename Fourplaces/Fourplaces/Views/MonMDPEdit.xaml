@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                      x:Class="Fourplaces.Views.MonMDPEdit"
+                      xmlns:mvvm="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms"
+                      >
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Editer mot de passe"/>
+            <Entry Text="{Binding OPWD}" Placeholder="Old password"/>
+            <Entry Text="{Binding NPWD}" Placeholder="New password"/>
+            <Button Text="modifier" Command="{Binding EDITER}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</mvvm:BaseContentPage>

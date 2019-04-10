@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                      x:Class="Fourplaces.Views.MonCompte"
+                      xmlns:mvvm="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms"
+                      >
+    <ContentPage.Content>
+        
+        <StackLayout>
+        
+            <Label Text="Mon Compte"/>
+            <Image Source="{Binding USER.SOURCEIMAGE}" WidthRequest="200" HeightRequest="200" />
+            <Label Text="{Binding USER.FirstName,StringFormat='First Name:{0}'}"  />
+            <Label Text="{Binding USER.LastName,StringFormat='Last Name:{0}'}"  />
+            <Label Text="{Binding USER.Email,StringFormat='email:{0}'}"  />
+            <Label Text="{Binding USER.ImageId,StringFormat='Image Id:{0}'}" />
+            
+            
+            <StackLayout Orientation="Horizontal">
+                  <Button Text="Editer compte" Command="{Binding EDITCOMPTE}"/>
+                  <Button Text="editer mdp" Command="{Binding EDITMDP}"/>
+            </StackLayout>   
+         
+            
+            
+        </StackLayout>
+    
+    </ContentPage.Content>
+    
+    
+ </mvvm:BaseContentPage>

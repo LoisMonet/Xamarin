@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             xmlns:mvvm="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms"
+             x:Class="Fourplaces.Views.PlaceItemView">
+            
+        
+        <StackLayout>  
+            <ScrollView>
+                   <StackLayout>
+                        <Image Source="{Binding IMAGEP}" WidthRequest="200" HeightRequest="200"/>
+                        <Label Text="{Binding PI.Title}"/>
+                        <Label Text="{Binding PI.Description}"/>
+<!--                    <Label Text="{Binding PI.Latitude, StringFormat='latitude:{0}'}"/>
+--><!--                 <Label Text="{Binding PI.Longitude, StringFormat='Longitude:{0}'}"/>
+-->                </StackLayout>
+            </ScrollView>  
+                   <StackLayout> 
+                        <!--<maps:Map WidthRequest="320" HeightRequest="200"
+                            x:Name="mapPlace"
+                            IsShowingUser="true"
+                            MapType="Hybrid" />-->
+                        <ContentView Content="{Binding MAP}"/>
+                   </StackLayout>
+                    
+            <StackLayout Orientation="Horizontal">
+                <Entry x:Name="inputC" Text="{Binding INPUTCOM}" Placeholder="Un nouveau commentaire?" />
+                <Button Text="OK" Command="{Binding SENDCOM}"/>
+            </StackLayout>
+            <StackLayout>
+                <ListView ItemsSource="{Binding PI.Comments}"
+                          HasUnevenRows="true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                           <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding Author.SOURCEIMAGE}" WidthRequest="40" HeightRequest="40"/>
+
+                                    <StackLayout Orientation="Vertical">
+                                        <Label Text="{Binding Date, StringFormat='Date:{0:dd/MM/yy}'}"/>
+                                        <Label Text="{Binding Author.FirstName, StringFormat='Author:{0:dd/MM/yy}'}"/>
+                                        <Label Text="{Binding Text, StringFormat='comment:{0}'}"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                      
+                       </DataTemplate>
+                    </ListView.ItemTemplate>   
+                </ListView>   
+            </StackLayout>
+        </StackLayout>
+  
+     
+   
+</mvvm:BaseContentPage>
+
+
+
+
