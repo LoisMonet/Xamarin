@@ -66,7 +66,8 @@ namespace Fourplaces.ViewModels
                 bool send=await SingletonRestService.RS.SendPlaceDataAsync(NOM, DESCRIPTION, LATITUDE, LONGITUDE, SingletonLoginResult.LR, true);
                 if (send)
                 {
-                    await NavigationService.PushAsync(new MainView());
+                    await NavigationService.PopAsync();
+                    //await NavigationService.PushAsync(new MainView());
                 }
 
             }
@@ -88,7 +89,8 @@ namespace Fourplaces.ViewModels
                 bool send = await SingletonRestService.RS.SendPlaceDataAsync(NOM, DESCRIPTION, LATITUDE, LONGITUDE, SingletonLoginResult.LR, false);
                 if (send)
                 {
-                    await NavigationService.PushAsync(new MainView());
+                    await NavigationService.PopAsync();
+                    //await NavigationService.PushAsync(new MainView());
                 }
 
             }
