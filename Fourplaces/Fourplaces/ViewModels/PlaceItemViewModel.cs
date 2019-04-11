@@ -34,7 +34,9 @@ namespace Fourplaces.ViewModels
             {
                 Console.WriteLine("SETIDDD:"+value.Id);
                 SetProperty(ref pis, value);
-                Task t = FindPlaceItem(pis.Id); //Work on that later
+                //Task t = FindPlaceItem(pis.Id); //LATER MAYBE USE IT BECAUSE WITH ONRESUME TO LONG TO SWITCH PAGE
+
+
             }
         }
 
@@ -166,6 +168,8 @@ namespace Fourplaces.ViewModels
                 //Initialize(new Dictionary<string, object> { "test":"testE"})
                 Console.WriteLine("Dev_Comm:" + PI.Id + "|" + INPUTCOM);
                 await SingletonRestService.RS.SendCommentDataAsync(PI.Id, INPUTCOM, SingletonLoginResult.LR);
+                //Console.WriteLine("Dev_OnResumeBef:" + PIS.Id);
+                await OnResume(); 
             }
             else
             { 
@@ -184,10 +188,14 @@ namespace Fourplaces.ViewModels
 
         }
 
-        //public event AddComment()
-        //{
-        //    Console.WriteLine("Dev_Comm:" + INPUTCOM);
-        //}
+        public override Task OnResume()
+        {
+            //Console.WriteLine("Dev_OnResume:" +PIS.Id);
+            INPUTCOM = "";
+            Task t = FindPlaceItem(PIS.Id); //Work on that later
+            return base.OnResume();
+        }
+
 
 
 

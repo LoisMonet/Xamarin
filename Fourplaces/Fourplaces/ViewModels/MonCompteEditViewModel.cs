@@ -78,15 +78,6 @@ namespace Fourplaces.ViewModels
             await SingletonRestService.RS.EditCountAsync(USER.FirstName,USER.LastName, USER.ImageId);
         }
 
-
-
-
-
-
-
-
-
-
     }
 }
 
