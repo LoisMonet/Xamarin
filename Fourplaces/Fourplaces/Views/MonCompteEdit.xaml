@@ -8,10 +8,16 @@
         
         <StackLayout>
             <Label Text="Editer compte"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="Galerie"/>
+                <Switch IsToggled="{Binding TYPEP}"></Switch>
+                <Label Text="Camera"/>
+            </StackLayout>
+            <ImageButton Source="{Binding IMAGE}" WidthRequest="200" HeightRequest="200" Command="{Binding PICTURE}"/>
             <Entry Text="{Binding USER.FirstName}" Placeholder="Prénom"  />
             <Entry Text="{Binding USER.LastName}" Placeholder="Nom"  />
-            <Entry Text="{Binding IMAGEID}" Placeholder="Image id" />
-            <Button Text="modifier" Command="{Binding EDITER}"/>
+<!--            <Entry Text="{Binding IMAGEID}" Placeholder="Image id" />
+-->         <Button Text="modifier" Command="{Binding EDITER}"/>
 
         </StackLayout>    
             
