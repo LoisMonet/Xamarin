@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Fourplaces.Models;
 using Storm.Mvvm;
@@ -12,7 +13,15 @@ namespace Fourplaces.ViewModels
     {
         private UserItem _user;
         private Command _editer;
-        private String imageId;
+        private Command _picture;
+
+        private ImageSource _image;
+        private byte[] imageB;
+
+        private bool typeP=false;
+
+        //private String imageId;
+
 
         public MonCompteEditViewModel()
         {
@@ -20,6 +29,8 @@ namespace Fourplaces.ViewModels
             //Task t = UserData();
             //Console.WriteLine("Dev_MCEVM:" + USER.Email);
             _editer = new Command(() => Editer());
+            _picture = new Command(() => ChoosePicture());
+
 
         }
 
@@ -37,30 +48,59 @@ namespace Fourplaces.ViewModels
             {
                 Console.WriteLine("mcevm:" + value.FirstName);
                 SetProperty(ref _user, value);
-
-                IMAGEID=USER.ImageId.ToString();
+                IMAGE = USER.SOURCEIMAGE;
+                //IMAGEID=USER.ImageId.ToString();
 
 
 
             }
         }
 
-        public String IMAGEID
+        public ImageSource IMAGE
         {
 
             get
             {
-                Console.WriteLine("IMAGEIDC:" + imageId);
-                return imageId;
 
+                return _image;
             }
             set
             {
-                SetProperty(ref imageId, value);
+                SetProperty(ref _image, value);
+            }
 
 
+        }
+
+        public bool TYPEP
+        {
+            get
+            {
+                return (typeP);
+            }
+
+            set
+            {
+                SetProperty(ref typeP, value);
             }
         }
+
+        //public String IMAGEID
+        //{
+
+        //    get
+        //    {
+        //        Console.WriteLine("IMAGEIDC:" + imageId);
+        //        return imageId;
+
+        //    }
+        //    set
+        //    {
+        //        SetProperty(ref imageId, value);
+
+
+        //    }
+        //}
 
         public Command EDITER
         {
@@ -70,22 +110,29 @@ namespace Fourplaces.ViewModels
             }
         }
 
+        public Command PICTURE
+        {
+            get
+            {
+                return _picture;
+            }
+        }
+
         async private void Editer()
         {
 
-            USER.ImageId = int.Parse(IMAGEID, System.Globalization.CultureInfo.InvariantCulture);
-            Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName+"|"+USER.ImageId);
-            await SingletonRestService.RS.EditCountAsync(USER.FirstName,USER.LastName, USER.ImageId);
+            //USER.ImageId = int.Parse(IMAGEID, System.Globalization.CultureInfo.InvariantCulture);
+            Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName+"|");
+            await SingletonRestService.RS.EditCountAsync(USER.FirstName,USER.LastName, USER.ImageId,imageB);
         }
 
+        public async void ChoosePicture()
+        {
 
-
-
-
-
-
-
-
+            imageB = await SingletonRestService.RS.SendPicture(TYPEP); 
+            IMAGE = ImageSource.FromStream(() => new MemoryStream(imageB));
+            Console.WriteLine("Dev_ChoosePicture");
+        }
 
     }
 }

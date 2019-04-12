@@ -100,18 +100,18 @@ namespace Fourplaces.ViewModels
 
         public MainViewModel()
         {
-            Console.WriteLine("MainViewModel");
+            //Console.WriteLine("MainViewModel");
            
-            Task t= FindData();
+            //Task t= FindData();
 
-            if (SingletonLoginResult.LR != null)
-            {
-                Console.WriteLine("Dev_CPAccessToken:" + SingletonLoginResult.LR.AccessToken);
-            }
-            else
-            {
-                Console.WriteLine("Dev_MVMPasEncoreConnecte");
-            }
+            //if (SingletonLoginResult.LR != null)
+            //{
+            //    Console.WriteLine("Dev_CPAccessToken:" + SingletonLoginResult.LR.AccessToken);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Dev_MVMPasEncoreConnecte");
+            //}
 
 
 
@@ -337,6 +337,23 @@ namespace Fourplaces.ViewModels
             Console.WriteLine("Dev_MC");
             //await NavigationService.PushAsync(new MonCompte());
             await NavigationService.PushAsync<MonCompte>();
+        }
+
+        public override Task OnResume()
+        {
+            Console.WriteLine("MainViewModel");
+
+            Task t = FindData();
+
+            if (SingletonLoginResult.LR != null)
+            {
+                Console.WriteLine("Dev_CPAccessToken:" + SingletonLoginResult.LR.AccessToken);
+            }
+            else
+            {
+                Console.WriteLine("Dev_MVMPasEncoreConnecte");
+            }
+            return base.OnResume();
         }
 
 

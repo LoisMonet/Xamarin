@@ -585,11 +585,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/loism/Documents/M1/S2/DevMultPlat/Fourplaces/Fourplaces/Fourplaces.csproj",
+      "projectUniqueName": "/Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces/Fourplaces.csproj",
       "projectName": "Fourplaces",
-      "projectPath": "/Users/loism/Documents/M1/S2/DevMultPlat/Fourplaces/Fourplaces/Fourplaces.csproj",
+      "projectPath": "/Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces/Fourplaces.csproj",
       "packagesPath": "/Users/loism/.nuget/packages/",
-      "outputPath": "/Users/loism/Documents/M1/S2/DevMultPlat/Fourplaces/Fourplaces/obj",
+      "outputPath": "/Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

@@ -132,7 +132,7 @@ namespace Fourplaces.Models
 
 
 
-        public async Task<bool> SendPlaceDataAsync(String nom, String description,string lattitude,string longitude,LoginResult lr,bool camera)
+        public async Task<bool> SendPlaceDataAsync(String nom, String description,string lattitude,string longitude, byte[] imageData,LoginResult lr)
         {
 
             var uri = new Uri(string.Format(url + "places/", string.Empty));
@@ -147,7 +147,7 @@ namespace Fourplaces.Models
             cpr.Title = nom;
             cpr.Description = description;
 
-            ImageItem iItem= await UploadImage(lr,camera);
+            ImageItem iItem= await UploadImage(imageData);
             cpr.ImageId =iItem.Id ;
 
             //cpr.ImageId = 37;
@@ -198,7 +198,7 @@ namespace Fourplaces.Models
 
         }
 
-        public async Task<Stream> SendPicture(bool camera)
+        public async Task<byte[]> SendPicture(bool camera)
         {
             if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
             {
@@ -228,12 +228,18 @@ namespace Fourplaces.Models
                     file = await CrossMedia.Current.PickPhotoAsync(galleryMediaOptions);
 
                 }
+
+                //if (file == null) MODIFY CODE HERE ELSE NULL IF QUIT PICTURE
+                //{
+                //    file = "profileDef.png";
+                //}
                 Console.WriteLine("picture:");
                 Console.WriteLine("picture:" + file);
 
                 var stream = file.GetStream();
                 file.Dispose();
-                return stream;
+                byte[] imageData = GetImageStreamAsBytes(stream);
+                return imageData;
 
                 //return file;
             }
@@ -241,7 +247,7 @@ namespace Fourplaces.Models
             return null;
         }
 
-        private byte[] GetImageStreamAsBytes(Stream input)
+        public byte[] GetImageStreamAsBytes(Stream input) //Put in private later
         {
             var buffer = new byte[16 * 1024];
             using (MemoryStream ms = new MemoryStream())
@@ -255,15 +261,15 @@ namespace Fourplaces.Models
             }
         }
 
-        public async Task<ImageItem> UploadImage(LoginResult lr,bool camera)
+        public async Task<ImageItem> UploadImage(byte[] imageData)
         {
-            Stream mf=await SendPicture(camera);
-            byte[] imageData = GetImageStreamAsBytes(mf);
+            //Stream mf=await SendPicture(camera);
+            //byte[] imageData = GetImageStreamAsBytes(mf);
             //byte[] imageData = await client.GetByteArrayAsync("https://bnetcmsus-a.akamaihd.net/cms/blog_header/x6/X6KQ96B3LHMY1551140875276.jpg");
             //byte[] imageData = mf.GetStream;
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://td-api.julienmialon.com/images");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", lr.AccessToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SingletonLoginResult.LR.AccessToken);
 
             MultipartFormDataContent requestContent = new MultipartFormDataContent();
 
@@ -451,8 +457,9 @@ namespace Fourplaces.Models
 
         }
 
-        public async Task<UserItem> EditCountAsync(String FName, string LName,int? imageId)
+        public async Task<UserItem> EditCountAsync(String FName, string LName,int? imageId,byte[] imageData)
         {
+
 
             var uri = new Uri(string.Format(url + "me", string.Empty));
 
@@ -462,7 +469,19 @@ namespace Fourplaces.Models
             UpdateProfileRequest upr = new UpdateProfileRequest();
             upr.FirstName = FName;
             upr.LastName = LName;
-            upr.ImageId = imageId;
+
+            if (imageData == null) //ne pas mettre a jour l'image de profil
+            {
+                upr.ImageId = imageId;
+            }
+            else
+            {
+                ImageItem iItem = await UploadImage(imageData);
+                upr.ImageId = iItem.Id;
+            }
+
+
+
 
             var jsonRequest = JsonConvert.SerializeObject(upr);
 

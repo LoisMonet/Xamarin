@@ -31,7 +31,8 @@ namespace Fourplaces.ViewModels
             _editMDP = new Command(() => EditMDP());
 
             //rs = new RestService();
-            Task t = DataUser();
+
+            //Task t = DataUser();
 
         }
 
@@ -107,10 +108,13 @@ namespace Fourplaces.ViewModels
             IMAGEP = await SingletonRestService.RS.GetRequestImage(USER.ImageId);
             //IMAGEP = "profilDef.png";
 
-
-
-
         }*/
+
+        public override Task OnResume()
+        {
+            Task t = DataUser();
+            return base.OnResume();
+        }
 
     }
 }

@@ -8,14 +8,22 @@
         <StackLayout>
         
             <Label Text="CreatePlace"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="Galerie"/>
+                <Switch IsToggled="{Binding TYPEP}"></Switch>
+                <Label Text="Camera"/>
+            </StackLayout>
+            <ImageButton Source="{Binding IMAGE}" WidthRequest="200" HeightRequest="200" Command="{Binding PICTURE}" />
             <Entry Text="{Binding NOM}" Placeholder="nom lieu please" />
             <Entry Text="{Binding DESCRIPTION}" Placeholder="description please" />
-            <Entry Text="{Binding IMAGE}" Placeholder="image please" />
-            <Entry Text="{Binding LATITUDE}" Placeholder="longitude please?" />
+<!--            <Entry Text="{Binding IMAGE}" Placeholder="image please" />
+-->            <Entry Text="{Binding LATITUDE}" Placeholder="longitude please?" />
             <Entry Text="{Binding LONGITUDE}" Placeholder="longitude please?" />
             <StackLayout Orientation="Horizontal">
-                  <Button Text="Photo Camera OK" Command="{Binding SENDWPICTURE}"/>
+<!--                  <Button Text="Photo Camera OK" Command="{Binding SENDWPICTURE}"/>
                   <Button Text="Photo Gallerie OK" Command="{Binding SENDWGALLERY}"/>
+               --><Button Text="Envoyer" Command="{Binding SEND}"/>
+
             </StackLayout>
             
             

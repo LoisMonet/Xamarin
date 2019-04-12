@@ -45,7 +45,8 @@ namespace Fourplaces.ViewModels
             {
                 Console.WriteLine("Dev_CDAccessToken:" + lr.AccessToken);
                 SingletonLoginResult.LR = lr;
-                await NavigationService.PushAsync(new MainView());
+                await NavigationService.PopAsync();
+                //await NavigationService.PushAsync(new MainView());
             }
 
 
