@@ -13,6 +13,7 @@ using Common.Api.Dtos;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System.IO;
+using Fourplaces.Models.Exceptions;
 
 namespace Fourplaces.Models
 {
@@ -360,6 +361,10 @@ namespace Fourplaces.Models
 
         public async Task<LoginResult> ConnexionDataAsync(String login, string mdp)
         {
+            if(login=="" || mdp == "")
+            {
+                throw new AuthenticationException(login,mdp);
+            }
 
             var uri = new Uri(string.Format(url + "auth/login", string.Empty));
 
@@ -405,13 +410,8 @@ namespace Fourplaces.Models
 
 
             }
-            else
-            {
-                Debugger.Break();
 
-            }
-
-            return null;
+            throw new AuthenticationException();
 
         }
 

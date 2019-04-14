@@ -9,10 +9,10 @@
         <StackLayout>
         
             <Label Text="Se connecter"/>
-            <Entry Text="{Binding LOGIN}" Placeholder="login" />
-            <Entry Text="{Binding MDP}" Placeholder="mdp" />
+            <Entry Text="{Binding Email}" Placeholder="email" />
+            <Entry Text="{Binding MDP}" Placeholder="mot de passe" />
             <Button Text="OK" Command="{Binding SEND}"/>
-            
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
             
         </StackLayout>
         

@@ -22,6 +22,7 @@ namespace Fourplaces.ViewModels
 
         //private String imageId;
 
+            
 
         public MonCompteEditViewModel()
         {
@@ -34,7 +35,7 @@ namespace Fourplaces.ViewModels
 
         }
 
-
+        
 
         [NavigationParameter]
         public UserItem USER
@@ -67,6 +68,7 @@ namespace Fourplaces.ViewModels
             set
             {
                 SetProperty(ref _image, value);
+
             }
 
 
