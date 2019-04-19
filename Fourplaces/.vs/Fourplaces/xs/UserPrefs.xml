@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{20DFBCE3-1E03-46A8-A030-58FD679AE43F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Fourplaces/Models/Exceptions/AuthenticationException.cs">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Fourplaces/MainPage.xaml.cs" Line="16" Column="10" />
       <File FileName="Fourplaces/MainPage.xaml" Line="7" Column="25" />
@@ -11,7 +11,7 @@
       <File FileName="Fourplaces/Models/Dtos/LoginResult.cs" Line="1" Column="1" />
       <File FileName="Fourplaces/Models/Dtos/LoginRequest.cs" Line="1" Column="1" />
       <File FileName="Fourplaces/Models/Dtos/ImageItem.cs" Line="1" Column="1" />
-      <File FileName="Fourplaces/Models/RestService.cs" Line="1" Column="1" />
+      <File FileName="Fourplaces/Models/RestService.cs" Line="105" Column="56" />
       <File FileName="Fourplaces/Models/AllData.cs" Line="15" Column="1" />
       <File FileName="Fourplaces/Models/Dtos/CommentItem.cs" Line="13" Column="13" />
       <File FileName="Fourplaces/Models/Dtos/CreateCommentRequest.cs" Line="9" Column="3" />
@@ -19,15 +19,15 @@
       <File FileName="Fourplaces/Models/Dtos/PlaceItem.cs" Line="28" Column="3" />
       <File FileName="Fourplaces/Models/Dtos/PlaceItemSummary.cs" Line="56" Column="10" />
       <File FileName="Fourplaces/Models/Dtos/UserItem.cs" Line="49" Column="70" />
-      <File FileName="Fourplaces/ViewModels/ConnexionViewModel.cs" Line="1" Column="1" />
-      <File FileName="Fourplaces/ViewModels/CreatePlaceViewModel.cs" Line="188" Column="13" />
-      <File FileName="Fourplaces/ViewModels/InscriptionViewModel.cs" Line="47" Column="14" />
-      <File FileName="Fourplaces/ViewModels/PlaceItemViewModel.cs" Line="1" Column="1" />
-      <File FileName="Fourplaces/Views/Connexion.xaml" Line="22" Column="1" />
-      <File FileName="Fourplaces/Views/CreatePlace.xaml" Line="34" Column="1" />
-      <File FileName="Fourplaces/Views/Inscription.xaml" Line="19" Column="23" />
+      <File FileName="Fourplaces/ViewModels/ConnexionViewModel.cs" Line="43" Column="10" />
+      <File FileName="Fourplaces/ViewModels/CreatePlaceViewModel.cs" Line="186" Column="69" />
+      <File FileName="Fourplaces/ViewModels/InscriptionViewModel.cs" Line="73" Column="14" />
+      <File FileName="Fourplaces/ViewModels/PlaceItemViewModel.cs" Line="188" Column="14" />
+      <File FileName="Fourplaces/Views/Connexion.xaml" Line="15" Column="13" />
+      <File FileName="Fourplaces/Views/CreatePlace.xaml" Line="17" Column="58" />
+      <File FileName="Fourplaces/Views/Inscription.xaml" Line="17" Column="13" />
       <File FileName="Fourplaces/Views/MainView.xaml" Line="28" Column="103" />
-      <File FileName="Fourplaces/Views/PlaceItemView.xaml" Line="34" Column="39" />
+      <File FileName="Fourplaces/Views/PlaceItemView.xaml" Line="51" Column="13" />
       <File FileName="Fourplaces/Views/PlaceItemView.xaml.cs" Line="46" Column="1" />
       <File FileName="Fourplaces/Views/MainView.xaml.cs" Line="16" Column="50" />
       <File FileName="Fourplaces.Android/Properties/AndroidManifest.xml" Line="4" Column="59" />
@@ -39,11 +39,11 @@
       <File FileName="Fourplaces/Views/Connexion.xaml.cs" Line="13" Column="35" />
       <File FileName="Fourplaces/ViewModels/MonCompteViewModel.cs" Line="1" Column="1" />
       <File FileName="Fourplaces/Views/MonCompte.xaml.cs" Line="13" Column="1" />
-      <File FileName="Fourplaces/ViewModels/MonMDPEditViewModel.cs" Line="16" Column="35" />
-      <File FileName="Fourplaces/ViewModels/MonCompteEditViewModel.cs" Line="62" Column="13" />
-      <File FileName="Fourplaces/Views/MonCompteEdit.xaml" Line="27" Column="1" />
+      <File FileName="Fourplaces/ViewModels/MonMDPEditViewModel.cs" Line="25" Column="9" />
+      <File FileName="Fourplaces/ViewModels/MonCompteEditViewModel.cs" Line="64" Column="14" />
+      <File FileName="Fourplaces/Views/MonCompteEdit.xaml" Line="21" Column="14" />
       <File FileName="Fourplaces/Views/MonCompteEdit.xaml.cs" Line="15" Column="56" />
-      <File FileName="Fourplaces/Views/MonMDPEdit.xaml" Line="15" Column="24" />
+      <File FileName="Fourplaces/Views/MonMDPEdit.xaml" Line="14" Column="23" />
       <File FileName="Fourplaces/Views/MonMDPEdit.xaml.cs" Line="18" Column="2" />
       <File FileName="Fourplaces/Models/Dtos/UpdatePasswordRequest.cs" Line="1" Column="1" />
       <File FileName="Fourplaces/Models/Dtos/UpdateProfileRequest.cs" Line="11" Column="45" />
@@ -58,10 +58,10 @@
       <File FileName="../../../../../../../../../Library/Frameworks/Mono.framework/Versions/5.16.0/lib/mono/msbuild/15.0/bin/Microsoft.Common.CurrentVersion.targets" Line="2132" Column="39" />
       <File FileName="../../../../../../../../../usr/local/share/dotnet/sdk/2.1.302/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" Line="197" Column="5" />
       <File FileName="Source non disponible" />
-      <File FileName="Fourplaces/Models/Exceptions/AuthenticationException.cs" Line="4" Column="46" />
+      <File FileName="Fourplaces/Models/Exceptions/AuthenticationException.cs" Line="51" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.Fourplaces.Android AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" PreferredExecutionTarget="Android.Nexus_4_API_22" />
+  <MonoDevelop.Ide.ItemProperties.Fourplaces.Android AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" PreferredExecutionTarget="Android.d7adf0af" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.Fourplaces.Droid FirstBuild="True" PreferredExecutionTarget="Android.Nexus_4_API_22" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

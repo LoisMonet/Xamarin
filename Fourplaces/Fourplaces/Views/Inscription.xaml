@@ -14,7 +14,8 @@
             <Entry Text="{Binding LNAME}" Placeholder="Last name" />
             <Entry Text="{Binding MDP}" Placeholder="password" />
             <Button Text="OK" Command="{Binding SEND}"/>
-            
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
+ 
             
         </StackLayout>
         

@@ -18,7 +18,7 @@
             <Entry Text="{Binding USER.LastName}" Placeholder="Nom"  />
 <!--            <Entry Text="{Binding IMAGEID}" Placeholder="Image id" />
 -->         <Button Text="modifier" Command="{Binding EDITER}"/>
-
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
         </StackLayout>    
             
         

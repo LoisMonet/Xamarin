@@ -48,6 +48,8 @@
                     </ListView.ItemTemplate>   
                 </ListView>   
             </StackLayout>
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
+
         </StackLayout>
   
      

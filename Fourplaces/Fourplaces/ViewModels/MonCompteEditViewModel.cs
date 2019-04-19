@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Storm.Mvvm;
 using Storm.Mvvm.Navigation;
 using TD.Api.Dtos;
@@ -19,10 +20,11 @@ namespace Fourplaces.ViewModels
         private byte[] imageB;
 
         private bool typeP=false;
+        private string exception;
 
         //private String imageId;
 
-            
+
 
         public MonCompteEditViewModel()
         {
@@ -35,7 +37,20 @@ namespace Fourplaces.ViewModels
 
         }
 
-        
+        public String EXCEPTION
+        {
+            get
+            {
+                return exception;
+            }
+
+            set
+            {
+                SetProperty(ref exception, value);
+            }
+        }
+
+
 
         [NavigationParameter]
         public UserItem USER
@@ -124,15 +139,26 @@ namespace Fourplaces.ViewModels
         {
 
             //USER.ImageId = int.Parse(IMAGEID, System.Globalization.CultureInfo.InvariantCulture);
-            Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName+"|");
-            await SingletonRestService.RS.EditCountAsync(USER.FirstName,USER.LastName, USER.ImageId,imageB);
+            try
+            {
+                Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName + "|");
+                await SingletonRestService.RS.EditCountAsync(USER.FirstName, USER.LastName, USER.ImageId, imageB);
+            }
+            catch(AuthenticationException ae)
+            {
+                EXCEPTION = ae.ExceptionMess;
+            }
+           
         }
 
         public async void ChoosePicture()
         {
 
-            imageB = await SingletonRestService.RS.SendPicture(TYPEP); 
-            IMAGE = ImageSource.FromStream(() => new MemoryStream(imageB));
+            imageB = await SingletonRestService.RS.SendPicture(TYPEP);
+            if (imageB != null)
+            {
+                IMAGE = ImageSource.FromStream(() => new MemoryStream(imageB));
+            }
             Console.WriteLine("Dev_ChoosePicture");
         }
 

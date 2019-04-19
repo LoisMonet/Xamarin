@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Storm.Mvvm;
@@ -23,6 +24,7 @@ namespace Fourplaces.ViewModels
         private ImageSource imageP;
 
         private CustomMap map;
+        private string exception;
 
         [NavigationParameter] //see that later
         public PlaceItemSummary PIS
@@ -111,6 +113,19 @@ namespace Fourplaces.ViewModels
             }
         }
 
+        public String EXCEPTION
+        {
+            get
+            {
+                return exception;
+            }
+
+            set
+            {
+                SetProperty(ref exception, value);
+            }
+        }
+
 
         public PlaceItemViewModel()
         //public PlaceItemViewModel(int id)
@@ -163,19 +178,20 @@ namespace Fourplaces.ViewModels
 
         public async void AddComment()
         {
-            if (SingletonLoginResult.LR != null)
+            try
             {
                 //Initialize(new Dictionary<string, object> { "test":"testE"})
                 Console.WriteLine("Dev_Comm:" + PI.Id + "|" + INPUTCOM);
                 await SingletonRestService.RS.SendCommentDataAsync(PI.Id, INPUTCOM, SingletonLoginResult.LR);
                 //Console.WriteLine("Dev_OnResumeBef:" + PIS.Id);
-                await OnResume(); 
+                await OnResume();
             }
-            else
-            { 
-                Console.WriteLine("Dev_ACPasEncoreConnecte:");
+            catch (AuthenticationException ae)
+            {
+                EXCEPTION=ae.ExceptionMess;
+            }
 
-            }
+
 
         }
 
