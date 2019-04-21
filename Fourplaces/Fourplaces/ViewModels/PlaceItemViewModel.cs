@@ -25,6 +25,7 @@ namespace Fourplaces.ViewModels
 
         private CustomMap map;
         private string exception;
+        private bool _isVisible;
 
         [NavigationParameter] //see that later
         public PlaceItemSummary PIS
@@ -39,6 +40,19 @@ namespace Fourplaces.ViewModels
                 //Task t = FindPlaceItem(pis.Id); //LATER MAYBE USE IT BECAUSE WITH ONRESUME TO LONG TO SWITCH PAGE
 
 
+            }
+        }
+
+        public Boolean IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                SetProperty(ref _isVisible, value);
             }
         }
 
@@ -188,6 +202,7 @@ namespace Fourplaces.ViewModels
             }
             catch (AuthenticationException ae)
             {
+
                 EXCEPTION=ae.ExceptionMess;
             }
 
@@ -209,6 +224,16 @@ namespace Fourplaces.ViewModels
             //Console.WriteLine("Dev_OnResume:" +PIS.Id);
             INPUTCOM = "";
             Task t = FindPlaceItem(PIS.Id); //Work on that later
+
+            if (SingletonLoginResult.LR != null)
+            {
+                IsVisible = true;
+            }
+            else
+            {
+                IsVisible = false;
+            }
+
             return base.OnResume();
         }
 

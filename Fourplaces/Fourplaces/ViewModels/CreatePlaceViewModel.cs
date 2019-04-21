@@ -43,7 +43,7 @@ namespace Fourplaces.ViewModels
 
 
 
-            IMAGE = "profilDef.png";
+            IMAGE = "placeDef.png";
             //_sendWGallery = new Command(() => SendPlaceWGallery());
             //_sendWPicture = new Command(() => SendPlaceWCamera());
             _send = new Command(() => Send());
@@ -211,11 +211,19 @@ namespace Fourplaces.ViewModels
 
             try
             {
-                Console.WriteLine("Dev_Send:" + NOM + "|" + DESCRIPTION + "|" + IMAGE + "|" + LATITUDE + "|" + LONGITUDE);
+                String latMod=LATITUDE;
+                String longMod=LONGITUDE;
+                latMod=latMod.Replace(" ", "");
+                latMod=latMod.Replace(",", ".");
+                longMod = longMod.Replace(" ", "");
+                longMod = longMod.Replace(",", ".");
+
+                Console.WriteLine("Dev_Send:" + NOM + "|" + DESCRIPTION + "|" + IMAGE + "|" + latMod + "|" + longMod);
 
 
 
-                bool send = await SingletonRestService.RS.SendPlaceDataAsync(NOM, DESCRIPTION, LATITUDE, LONGITUDE, imageB, SingletonLoginResult.LR);
+
+                bool send = await SingletonRestService.RS.SendPlaceDataAsync(NOM, DESCRIPTION, latMod, longMod, imageB, SingletonLoginResult.LR);
                 if (send)
                 {
                     await NavigationService.PopAsync();
@@ -264,9 +272,8 @@ namespace Fourplaces.ViewModels
                 //if (positionUser != null)
                 //{
                 Console.WriteLine(string.Format("DevLoc_Lat: {0}  Long: {1}", positionUser.Latitude, positionUser.Longitude));
-
-                LATITUDE = positionUser.Latitude.ToString();
-                LONGITUDE = positionUser.Longitude.ToString();
+                LATITUDE = positionUser.Latitude.ToString().Replace(",","."); //SEE AGAIN MAYBE
+                LONGITUDE = positionUser.Longitude.ToString().Replace(",", ".");
 
 
             }
@@ -284,6 +291,7 @@ namespace Fourplaces.ViewModels
         //    string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Email", "Twitter", "Facebook");
         //    Debug.WriteLine("Action: " + action);
         //}
+
 
     }
 }

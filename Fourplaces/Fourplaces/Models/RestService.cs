@@ -90,7 +90,7 @@ namespace Fourplaces.Models
         {
             CheckInternetConnection();
 
-            isConnected();
+            await isConnected();
             if (string.IsNullOrEmpty(comment)) //SEE AGAIN
             {
                 //Console.WriteLine("Exception:" + oldPW + "|" + newPW);
@@ -146,9 +146,15 @@ namespace Fourplaces.Models
 
         public async Task<bool> SendPlaceDataAsync(String nom, String description,String lattitude,String longitude, byte[] imageData,LoginResult lr)
         {
+            
             CheckInternetConnection();
 
-            isConnected();
+            await isConnected();
+
+            if (imageData == null)
+            {
+                throw new AuthenticationException("Vous n'avez pas ajouté d'image");
+            }
 
             if (nom == ""|| description == "" || string.IsNullOrEmpty(lattitude)|| string.IsNullOrEmpty(longitude))
             {
@@ -159,6 +165,8 @@ namespace Fourplaces.Models
             var uri = new Uri(string.Format(url + "places/", string.Empty));
             double lattitudeD;
             double longitudeD;
+
+            Console.WriteLine("Dev_SendPlaceData:lattitude:" + lattitude + "|longitude:" + longitude);
             try
             {
                 lattitudeD = double.Parse(lattitude, System.Globalization.CultureInfo.InvariantCulture);
@@ -262,6 +270,7 @@ namespace Fourplaces.Models
                     file = await CrossMedia.Current.PickPhotoAsync(galleryMediaOptions);
 
                 }
+                
 
                 //if (file == null) MODIFY CODE HERE ELSE NULL IF QUIT PICTURE
                 //{
@@ -402,6 +411,55 @@ namespace Fourplaces.Models
 
         }
 
+
+        public async Task RefreshAsync()
+        {
+            CheckInternetConnection();
+
+
+            var uri = new Uri(string.Format(url + "auth/refresh", string.Empty));
+
+            Console.WriteLine("Dev_Refresh:");
+
+
+
+            RefreshRequest rr = new RefreshRequest();
+            rr.RefreshToken = SingletonLoginResult.LR.RefreshToken;
+            var jsonRequest = JsonConvert.SerializeObject(rr);
+
+
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "text/json");
+            //var response = client.PostAsync(uri, content).Result;
+
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "__access__token__");
+            request.Content = content;
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            string result = await response.Content.ReadAsStringAsync();
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Dev_RDResponse:" + result);
+                Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
+                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+
+                if (r.IsSuccess)
+                {
+                    SingletonLoginResult.destroyLR();
+                    SingletonLoginResult.LR = r.Data;
+                    //Console.WriteLine("DevRefffresh:"+ SingletonLoginResult.LR.AccessToken);
+                }
+
+            }
+
+
+        }
+
         public async Task<LoginResult> ConnexionDataAsync(String email, String mdp)
         {
             CheckInternetConnection();
@@ -507,7 +565,7 @@ namespace Fourplaces.Models
         {
             CheckInternetConnection();
 
-            isConnected();
+            await isConnected();
 
             if (FName == "" || LName == "")
             {
@@ -587,7 +645,7 @@ namespace Fourplaces.Models
         {
             CheckInternetConnection();
 
-            isConnected();
+            await isConnected();
 
             if (oldPW==null || newPW==null || oldPW=="" ||newPW=="") //SEE AGAIN
             {
@@ -683,13 +741,19 @@ namespace Fourplaces.Models
 
         }
 
-        public void isConnected()
+        public async Task  isConnected()
         {
             if (SingletonLoginResult.LR == null)
             {
                 throw new AuthenticationException("vous n'êtes pas connecté");
             }
+            //Console.WriteLine("Dev_OldconnectedToken:" + SingletonLoginResult.LR.AccessToken);
+            //await RefreshAsync();
             Console.WriteLine("Dev_connectedToken:" + SingletonLoginResult.LR.AccessToken);
+            if (SingletonLoginResult.LR.IsExpired())
+            {
+                await RefreshAsync();
+            }
 
         }
 

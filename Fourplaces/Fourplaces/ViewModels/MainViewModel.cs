@@ -27,6 +27,7 @@ namespace Fourplaces.ViewModels
 
         private PlaceItemSummary pisS;
         private string exception;
+        private bool _isVisible;
 
         //private int id=1;
 
@@ -46,6 +47,19 @@ namespace Fourplaces.ViewModels
                 ItemTapped();
             }
 
+        }
+
+        public Boolean IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                SetProperty(ref _isVisible, value);
+            }
         }
 
 
@@ -180,8 +194,7 @@ namespace Fourplaces.ViewModels
                     {
                         Console.WriteLine("Dev_DistSort:"+d);
                     }*/
-
-
+                    
                     //OnPropertyChanged("LPIS");
                 }
                 catch (AuthenticationException ae)
@@ -381,10 +394,12 @@ namespace Fourplaces.ViewModels
 
             if (SingletonLoginResult.LR != null)
             {
+                IsVisible = true;
                 Console.WriteLine("Dev_CPAccessToken:" + SingletonLoginResult.LR.AccessToken);
             }
             else
             {
+                IsVisible = false;
                 Console.WriteLine("Dev_MVMPasEncoreConnecte");
             }
             return base.OnResume();
