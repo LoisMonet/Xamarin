@@ -94,6 +94,7 @@
     <AndroidResource Include="Resources\drawable\icon.png" />
     <AndroidResource Include="Resources\xml\file_paths.xml" />
     <AndroidResource Include="Resources\drawable\profilDef.png" />
+    <AndroidResource Include="Resources\drawable\placeDef.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

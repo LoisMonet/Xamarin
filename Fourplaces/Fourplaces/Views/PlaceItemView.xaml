@@ -24,8 +24,8 @@
                    </StackLayout>
                     
             <StackLayout Orientation="Horizontal">
-                <Entry x:Name="inputC" Text="{Binding INPUTCOM}" Placeholder="Un nouveau commentaire?" />
-                <Button Text="OK" Command="{Binding SENDCOM}"/>
+                <Entry x:Name="inputC" Text="{Binding INPUTCOM}" Placeholder="Un nouveau commentaire?" IsVisible="{Binding IsVisible}" />
+                <Button Text="OK" Command="{Binding SENDCOM}" IsVisible="{Binding IsVisible}"/>
             </StackLayout>
             <StackLayout>
                 <ListView ItemsSource="{Binding PI.Comments}"
@@ -37,9 +37,9 @@
                                     <Image Source="{Binding Author.SOURCEIMAGE}" WidthRequest="40" HeightRequest="40"/>
 
                                     <StackLayout Orientation="Vertical">
-                                        <Label Text="{Binding Date, StringFormat='Date:{0:dd/MM/yy}'}"/>
-                                        <Label Text="{Binding Author.FirstName, StringFormat='Author:{0:dd/MM/yy}'}"/>
-                                        <Label Text="{Binding Text, StringFormat='comment:{0}'}"/>
+                                        <Label Text="{Binding Date, StringFormat='{0:dd/MM/yy}'}"/>
+                                        <Label Text="{Binding Author.FirstName, StringFormat='Auteur:{0}'}"/>
+                                        <Label Text="{Binding Text, StringFormat='{0}'}"/>
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell>
@@ -48,6 +48,8 @@
                     </ListView.ItemTemplate>   
                 </ListView>   
             </StackLayout>
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
+
         </StackLayout>
   
      

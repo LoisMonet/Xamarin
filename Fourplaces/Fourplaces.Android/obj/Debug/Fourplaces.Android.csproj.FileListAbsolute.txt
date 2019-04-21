@@ -108,6 +108,7 @@
 /Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces.Android/obj/Debug/R.cs.flag
 /Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces.Android/obj/Debug/R.txt
 /Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces.Android/obj/Debug/uploadflags.txt
+/Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces.Android/obj/Debug/res/drawable/placedef.png
 /Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces.Android/obj/Debug/linksrc/Fourplaces.Android.pdb
 /Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces.Android/obj/Debug/linksrc/FormsViewGroup.pdb
 /Users/loism/Documents/M1/S2/DevMultPlat/XamarinWork/projetXamarin/Fourplaces/Fourplaces.Android/obj/Debug/linksrc/Fourplaces.pdb

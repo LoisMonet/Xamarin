@@ -14,17 +14,18 @@
                 <Label Text="Camera"/>
             </StackLayout>
             <ImageButton Source="{Binding IMAGE}" WidthRequest="200" HeightRequest="200" Command="{Binding PICTURE}" />
-            <Entry Text="{Binding NOM}" Placeholder="nom lieu please" />
-            <Entry Text="{Binding DESCRIPTION}" Placeholder="description please" />
+            <Entry Text="{Binding NOM}" Placeholder="nom" />
+            <Entry Text="{Binding DESCRIPTION}" Placeholder="description" />
 <!--            <Entry Text="{Binding IMAGE}" Placeholder="image please" />
--->            <Entry Text="{Binding LATITUDE}" Placeholder="longitude please?" />
-            <Entry Text="{Binding LONGITUDE}" Placeholder="longitude please?" />
+-->            <Entry Text="{Binding LATITUDE}" Placeholder="latitude" />
+            <Entry Text="{Binding LONGITUDE}" Placeholder="longitude" />
             <StackLayout Orientation="Horizontal">
 <!--                  <Button Text="Photo Camera OK" Command="{Binding SENDWPICTURE}"/>
                   <Button Text="Photo Gallerie OK" Command="{Binding SENDWGALLERY}"/>
                --><Button Text="Envoyer" Command="{Binding SEND}"/>
-
             </StackLayout>
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
+
             
             
         </StackLayout>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Fourplaces.Views;
 using Storm.Mvvm;
 using TD.Api.Dtos;
@@ -10,7 +11,7 @@ namespace Fourplaces.ViewModels
     public class InscriptionViewModel : ViewModelBase
     {
         public LoginResult lr;
-
+        private string exception;
 
         public InscriptionViewModel()
         {
@@ -30,6 +31,19 @@ namespace Fourplaces.ViewModels
 
         public String MDP { get; set; }
 
+        public String EXCEPTION
+        {
+            get
+            {
+                return exception;
+            }
+
+            set
+            {
+                SetProperty(ref exception, value);
+            }
+        }
+
         public Command SEND
         {
             get
@@ -40,17 +54,25 @@ namespace Fourplaces.ViewModels
 
         public async void SendRegister()
         {
-
-            Console.WriteLine("Dev_Send:" + EMAIL + "|" + FNAME + "|" + LNAME + "|" + MDP);
-            lr=await SingletonRestService.RS.RegisterDataAsync(EMAIL, FNAME, LNAME, MDP);
-            if (lr != null)
+            try
             {
-                SingletonLoginResult.LR = lr;
-                Console.WriteLine("Dev_RDAccessToken:" + SingletonLoginResult.LR.AccessToken);
-                await NavigationService.PopAsync();
-                //await NavigationService.PushAsync(new MainView());
+                Console.WriteLine("Dev_Send:" + EMAIL + "|" + FNAME + "|" + LNAME + "|" + MDP);
+                lr = await SingletonRestService.RS.RegisterDataAsync(EMAIL, FNAME, LNAME, MDP);
+                if (lr != null)
+                {
+                    SingletonLoginResult.LR = lr;
+                    Console.WriteLine("Dev_RDAccessToken:" + SingletonLoginResult.LR.AccessToken);
+                    await NavigationService.PopAsync();
+                    //await NavigationService.PushAsync(new MainView());
 
+                }
             }
+            catch(AuthenticationException ae)
+            {
+                EXCEPTION = ae.ExceptionMess;
+            }
+
+            
 
 
 

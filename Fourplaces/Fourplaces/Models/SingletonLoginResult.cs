@@ -25,5 +25,10 @@ namespace Fourplaces.Models
                 }
             }
         }
+
+        public static void destroyLR()
+        {
+            singletonLR = null;
+        }
     }
 }

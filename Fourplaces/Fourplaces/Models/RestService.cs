@@ -13,6 +13,8 @@ using Common.Api.Dtos;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System.IO;
+using Fourplaces.Models.Exceptions;
+using System.Net;
 
 namespace Fourplaces.Models
 {
@@ -33,6 +35,7 @@ namespace Fourplaces.Models
 
         public async Task<List<PlaceItemSummary>> RefreshDataAsync()
         {
+            CheckInternetConnection();
 
             var uri = new Uri(string.Format(url+"places", string.Empty));
 
@@ -59,6 +62,7 @@ namespace Fourplaces.Models
 
         public async Task<PlaceItem> PlaceItemDataAsync(int id)
         {
+            CheckInternetConnection();
 
             var uri = new Uri(string.Format(url + "places/" + id, string.Empty));
 
@@ -84,6 +88,14 @@ namespace Fourplaces.Models
 
         public async Task SendCommentDataAsync(int id,String comment,LoginResult lr)
         {
+            CheckInternetConnection();
+
+            await isConnected();
+            if (string.IsNullOrEmpty(comment)) //SEE AGAIN
+            {
+                //Console.WriteLine("Exception:" + oldPW + "|" + newPW);
+                throw new AuthenticationException("Le champ commentaire est vide"); //SEE AGAIN THIS METHOD LATER
+            }
 
             var uri = new Uri(string.Format(url + "places/" + id+"/comments", string.Empty));
 
@@ -132,15 +144,45 @@ namespace Fourplaces.Models
 
 
 
-        public async Task<bool> SendPlaceDataAsync(String nom, String description,string lattitude,string longitude, byte[] imageData,LoginResult lr)
+        public async Task<bool> SendPlaceDataAsync(String nom, String description,String lattitude,String longitude, byte[] imageData,LoginResult lr)
         {
+            
+            CheckInternetConnection();
+
+            await isConnected();
+
+            if (imageData == null)
+            {
+                throw new AuthenticationException("Vous n'avez pas ajouté d'image");
+            }
+
+            if (nom == ""|| description == "" || string.IsNullOrEmpty(lattitude)|| string.IsNullOrEmpty(longitude))
+            {
+                throw new AuthenticationException(nom,description, lattitude, longitude,0); //SEE AGAIN THIS METHOD LATER
+            }
+
 
             var uri = new Uri(string.Format(url + "places/", string.Empty));
+            double lattitudeD;
+            double longitudeD;
 
+            Console.WriteLine("Dev_SendPlaceData:lattitude:" + lattitude + "|longitude:" + longitude);
+            try
+            {
+                lattitudeD = double.Parse(lattitude, System.Globalization.CultureInfo.InvariantCulture);
+                longitudeD = double.Parse(longitude, System.Globalization.CultureInfo.InvariantCulture);
 
+                if (lattitudeD > 90 || lattitudeD < -90 || longitudeD > 180 || longitudeD < -180 || lattitudeD.Equals(0) || longitudeD.Equals(0))
+                {
+                    throw new AuthenticationException(lattitudeD, longitudeD);
+                }
 
-            double lattitudeD = double.Parse(lattitude, System.Globalization.CultureInfo.InvariantCulture);
-            double longitudeD = double.Parse(longitude, System.Globalization.CultureInfo.InvariantCulture);
+            }
+            catch (System.FormatException)
+            {
+                throw new AuthenticationException("mauvais format de la latitude ou de la longitude(ex 5 ou 5.2)");
+            }
+
 
 
             CreatePlaceRequest cpr = new CreatePlaceRequest();
@@ -154,7 +196,7 @@ namespace Fourplaces.Models
             cpr.Latitude = lattitudeD;
             cpr.Longitude = longitudeD;
 
-            Console.WriteLine("Dev_SendPlaceData:lattitudeD:" + lattitudeD + "|longitudeD:" + longitudeD+"|imageId:"+37);
+            Console.WriteLine("Dev_SendPlaceData:lattitudeD:" + lattitudeD + "|longitudeD:" + longitudeD+"|imageId:"+cpr.ImageId);
 
             var jsonRequest = JsonConvert.SerializeObject(cpr);
 
@@ -228,6 +270,7 @@ namespace Fourplaces.Models
                     file = await CrossMedia.Current.PickPhotoAsync(galleryMediaOptions);
 
                 }
+                
 
                 //if (file == null) MODIFY CODE HERE ELSE NULL IF QUIT PICTURE
                 //{
@@ -235,11 +278,18 @@ namespace Fourplaces.Models
                 //}
                 Console.WriteLine("picture:");
                 Console.WriteLine("picture:" + file);
+                if (file != null)
+                {
+                    var stream = file.GetStream();
+                    file.Dispose();
+                    byte[] imageData = GetImageStreamAsBytes(stream);
+                    return imageData;
+                }
 
-                var stream = file.GetStream();
-                file.Dispose();
-                byte[] imageData = GetImageStreamAsBytes(stream);
-                return imageData;
+                return null;
+
+
+
 
                 //return file;
             }
@@ -263,6 +313,8 @@ namespace Fourplaces.Models
 
         public async Task<ImageItem> UploadImage(byte[] imageData)
         {
+            CheckInternetConnection();
+
             //Stream mf=await SendPicture(camera);
             //byte[] imageData = GetImageStreamAsBytes(mf);
             //byte[] imageData = await client.GetByteArrayAsync("https://bnetcmsus-a.akamaihd.net/cms/blog_header/x6/X6KQ96B3LHMY1551140875276.jpg");
@@ -305,8 +357,15 @@ namespace Fourplaces.Models
             }
         }
 
-        public async Task<LoginResult> RegisterDataAsync(String email, String fname, string lname, string mdp)
+        public async Task<LoginResult> RegisterDataAsync(String email, String fname, String lname, String mdp)
         {
+            CheckInternetConnection();
+
+
+            if (email == "" || mdp == "" || fname=="" || mdp=="")
+            {
+                throw new AuthenticationException(email, mdp,fname,lname);
+            }
 
             var uri = new Uri(string.Format(url + "auth/register", string.Empty));
 
@@ -348,18 +407,67 @@ namespace Fourplaces.Models
                 }
                 
             }
-            else
-            {
-                Debugger.Break();
-
-            }
-
-            return null;
+            throw new AuthenticationException("email déjà pris");
 
         }
 
-        public async Task<LoginResult> ConnexionDataAsync(String login, string mdp)
+
+        public async Task RefreshAsync()
         {
+            CheckInternetConnection();
+
+
+            var uri = new Uri(string.Format(url + "auth/refresh", string.Empty));
+
+            Console.WriteLine("Dev_Refresh:");
+
+
+
+            RefreshRequest rr = new RefreshRequest();
+            rr.RefreshToken = SingletonLoginResult.LR.RefreshToken;
+            var jsonRequest = JsonConvert.SerializeObject(rr);
+
+
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "text/json");
+            //var response = client.PostAsync(uri, content).Result;
+
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "__access__token__");
+            request.Content = content;
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            string result = await response.Content.ReadAsStringAsync();
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Dev_RDResponse:" + result);
+                Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
+                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+
+                if (r.IsSuccess)
+                {
+                    SingletonLoginResult.destroyLR();
+                    SingletonLoginResult.LR = r.Data;
+                    //Console.WriteLine("DevRefffresh:"+ SingletonLoginResult.LR.AccessToken);
+                }
+
+            }
+
+
+        }
+
+        public async Task<LoginResult> ConnexionDataAsync(String email, String mdp)
+        {
+            CheckInternetConnection();
+
+            if (email=="" || mdp == "")
+            {
+                throw new AuthenticationException(email,mdp);
+            }
 
             var uri = new Uri(string.Format(url + "auth/login", string.Empty));
 
@@ -367,7 +475,7 @@ namespace Fourplaces.Models
 
 
             LoginRequest lr = new LoginRequest();
-            lr.Email = login;
+            lr.Email = email;
 
             lr.Password = mdp;
             var jsonRequest = JsonConvert.SerializeObject(lr);
@@ -405,18 +513,14 @@ namespace Fourplaces.Models
 
 
             }
-            else
-            {
-                Debugger.Break();
 
-            }
-
-            return null;
+            throw new AuthenticationException("mauvais email ou mot de passe");
 
         }
 
         public async Task<UserItem> UserDataAsync()
         {
+            CheckInternetConnection();
 
             var uri = new Uri(string.Format(url + "me", string.Empty));
 
@@ -457,9 +561,16 @@ namespace Fourplaces.Models
 
         }
 
-        public async Task<UserItem> EditCountAsync(String FName, string LName,int? imageId,byte[] imageData)
+        public async Task<UserItem> EditCountAsync(String FName, String LName,int? imageId,byte[] imageData)
         {
+            CheckInternetConnection();
 
+            await isConnected();
+
+            if (FName == "" || LName == "")
+            {
+                throw new AuthenticationException(FName, LName, 0); //SEE AGAIN THIS METHOD LATER
+            }
 
             var uri = new Uri(string.Format(url + "me", string.Empty));
 
@@ -532,10 +643,19 @@ namespace Fourplaces.Models
 
         public async Task<UserItem> EditPWAsync(String oldPW,String newPW)
         {
+            CheckInternetConnection();
+
+            await isConnected();
+
+            if (oldPW==null || newPW==null || oldPW=="" ||newPW=="") //SEE AGAIN
+            {
+                //Console.WriteLine("Exception:" + oldPW + "|" + newPW);
+                throw new AuthenticationException(oldPW, newPW, true); //SEE AGAIN THIS METHOD LATER
+            }
+
 
             var uri = new Uri(string.Format(url + "me/password", string.Empty));
 
-            Console.WriteLine("Dev_ECA:");
 
 
             UpdatePasswordRequest upr = new UpdatePasswordRequest();
@@ -578,18 +698,15 @@ namespace Fourplaces.Models
 
 
             }
-            else
-            {
-                Debugger.Break();
 
-            }
-
-            return null;
+            throw new AuthenticationException("L'ancien mot de passe n'est pas correct");
 
         }
 
         public async Task<ImageSource> GetRequestImage(int? id)
         {
+            CheckInternetConnection();
+
             if (id == null)
             {
                 return "profilDef.png";
@@ -622,9 +739,45 @@ namespace Fourplaces.Models
                 return "profilDef.png";
             }
 
+        }
 
+        public async Task  isConnected()
+        {
+            if (SingletonLoginResult.LR == null)
+            {
+                throw new AuthenticationException("vous n'êtes pas connecté");
+            }
+            //Console.WriteLine("Dev_OldconnectedToken:" + SingletonLoginResult.LR.AccessToken);
+            //await RefreshAsync();
+            Console.WriteLine("Dev_connectedToken:" + SingletonLoginResult.LR.AccessToken);
+            if (SingletonLoginResult.LR.IsExpired())
+            {
+                await RefreshAsync();
+            }
 
+        }
 
+        public void CheckInternetConnection()
+        {
+            string CheckUrl = url;
+
+            try
+            {
+                HttpWebRequest testRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
+
+                testRequest.Timeout = 1000;
+
+                WebResponse testResponse = testRequest.GetResponse();
+
+                // Console.WriteLine ("...connection established..." + iNetRequest.ToString ());
+                testResponse.Close();
+
+            }
+            catch (WebException ex)
+            {
+                Console.WriteLine("Dev_checkCo:"+ex.Message); 
+                throw new AuthenticationException("vous n'êtes pas connecté à internet");
+            }
         }
 
     }

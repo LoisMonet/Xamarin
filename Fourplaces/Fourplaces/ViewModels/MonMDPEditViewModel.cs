@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Storm.Mvvm;
 using TD.Api.Dtos;
 using Xamarin.Forms;
@@ -12,6 +13,7 @@ namespace Fourplaces.ViewModels
 
         //private UpdatePasswordRequest _upr;
         private Command _editer;
+        private string exception;
 
         public MonMDPEditViewModel()
         {
@@ -31,9 +33,31 @@ namespace Fourplaces.ViewModels
             }
         }
 
+        public String EXCEPTION
+        {
+            get
+            {
+                return exception;
+            }
+
+            set
+            {
+                SetProperty(ref exception, value);
+            }
+        }
+
+
         async private void Editer()
         {
-            await SingletonRestService.RS.EditPWAsync(OPWD, NPWD);
+            try
+            {
+                await SingletonRestService.RS.EditPWAsync(OPWD, NPWD);
+            }
+            catch(AuthenticationException ae)
+            {
+                EXCEPTION = ae.ExceptionMess;
+            }
+
         }
 
 

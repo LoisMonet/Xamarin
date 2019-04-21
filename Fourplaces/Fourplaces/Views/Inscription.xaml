@@ -9,12 +9,13 @@
         <StackLayout>
         
             <Label Text="S'inscrire"/>
-            <Entry Text="{Binding EMAIL}" Placeholder="login" />
-            <Entry Text="{Binding FNAME}" Placeholder="First name" />
-            <Entry Text="{Binding LNAME}" Placeholder="Last name" />
-            <Entry Text="{Binding MDP}" Placeholder="password" />
+            <Entry Text="{Binding EMAIL}" Placeholder="Email" />
+            <Entry Text="{Binding FNAME}" Placeholder="Prénom" />
+            <Entry Text="{Binding LNAME}" Placeholder="Nom" />
+            <Entry Text="{Binding MDP}" Placeholder="Mot de passe" />
             <Button Text="OK" Command="{Binding SEND}"/>
-            
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
+ 
             
         </StackLayout>
         

@@ -10,6 +10,7 @@
             <Entry Text="{Binding OPWD}" Placeholder="Old password"/>
             <Entry Text="{Binding NPWD}" Placeholder="New password"/>
             <Button Text="modifier" Command="{Binding EDITER}"/>
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
         </StackLayout>
     </ContentPage.Content>
 </mvvm:BaseContentPage>

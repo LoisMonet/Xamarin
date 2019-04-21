@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Fourplaces.Views;
 using Newtonsoft.Json;
 using Plugin.Geolocator;
@@ -25,6 +26,9 @@ namespace Fourplaces.ViewModels
         private Plugin.Geolocator.Abstractions.Position positionUser = null;
 
         private PlaceItemSummary pisS;
+        private string exception;
+        private bool _isVisible;
+
         //private int id=1;
 
         public PlaceItemSummary PISS
@@ -43,6 +47,19 @@ namespace Fourplaces.ViewModels
                 ItemTapped();
             }
 
+        }
+
+        public Boolean IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                SetProperty(ref _isVisible, value);
+            }
         }
 
 
@@ -96,6 +113,19 @@ namespace Fourplaces.ViewModels
 
         }
 
+        public String EXCEPTION
+        {
+            get
+            {
+                return exception;
+            }
+
+            set
+            {
+                SetProperty(ref exception, value);
+            }
+        }
+
 
 
         public MainViewModel()
@@ -120,48 +150,65 @@ namespace Fourplaces.ViewModels
 
             public async Task FindData()
         {
-            Console.WriteLine("Dev_FD");
-            //lpis = await rs.RefreshDataAsync();
-            List<PlaceItemSummary> listprov =await SingletonRestService.RS.RefreshDataAsync();
-
-            posCurr = await GetLocationAsync();
-            Console.WriteLine("Dev_SORTGO");
-            LPIS =sortDistLPIS(listprov);
-            //Dictionary<int, double> dico=new Dictionary<int, double>();
-            //List<double,PlaceItemSummary> l = new List<double>();
-            /*foreach (PlaceItemSummary pis in LPIS)
+            try
             {
-                Position posPlace = new Position(pis.Latitude, pis.Longitude);
-                Distance d = DistanceBetweenPoints(posCurr, posPlace);
-                Console.WriteLine("Dev_Dist:" + pis.Title + "|" + d.Kilometers);
-                //l.Add(d.Kilometers);
-                dico.Add(pis.Id, d.Kilometers);
+                Console.WriteLine("Dev_FD");
+                //lpis = await rs.RefreshDataAsync();
+                List<PlaceItemSummary> listprov = await SingletonRestService.RS.RefreshDataAsync();
+
+                try
+                {
+                    posCurr = await GetLocationAsync();
+
+                    Console.WriteLine("Dev_SORTGO:" + posCurr.Latitude + "|" + posCurr.Longitude);
+                    LPIS = sortDistLPIS(listprov);
+                    //Dictionary<int, double> dico=new Dictionary<int, double>();
+                    //List<double,PlaceItemSummary> l = new List<double>();
+                    /*foreach (PlaceItemSummary pis in LPIS)
+                    {
+                        Position posPlace = new Position(pis.Latitude, pis.Longitude);
+                        Distance d = DistanceBetweenPoints(posCurr, posPlace);
+                        Console.WriteLine("Dev_Dist:" + pis.Title + "|" + d.Kilometers);
+                        //l.Add(d.Kilometers);
+                        dico.Add(pis.Id, d.Kilometers);
 
 
+                    }
+
+                    //var list= dico.Keys.ToList();
+
+                    var items=from pair in dico
+                              orderby pair.Value ascending
+                              select pair;
+
+                    foreach (KeyValuePair<int, double> pair in items)
+                    {
+                        Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
+                    }*/
+
+
+
+
+
+                    /*foreach(double d in l)
+                    {
+                        Console.WriteLine("Dev_DistSort:"+d);
+                    }*/
+                    
+                    //OnPropertyChanged("LPIS");
+                }
+                catch (AuthenticationException ae)
+                {
+
+                    EXCEPTION = ae.ExceptionMess;
+                    LPIS = listprov;
+                }
+            }catch(AuthenticationException ae)
+            {
+                EXCEPTION = ae.ExceptionMess;
             }
 
-            //var list= dico.Keys.ToList();
 
-            var items=from pair in dico
-                      orderby pair.Value ascending
-                      select pair;
-
-            foreach (KeyValuePair<int, double> pair in items)
-            {
-                Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
-            }*/
-
-
-
-
-
-            /*foreach(double d in l)
-            {
-                Console.WriteLine("Dev_DistSort:"+d);
-            }*/
-
-
-            //OnPropertyChanged("LPIS");
 
 
         }
@@ -176,29 +223,27 @@ namespace Fourplaces.ViewModels
             {
                 var locator = CrossGeolocator.Current;
                 locator.DesiredAccuracy = 100;
-                var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(2));
 
+                var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(5));
                 positionUser = position;
                 //positionUser = null;
 
 
+                //if (positionUser != null)
+                //{
+                Console.WriteLine(string.Format("DevLoc_Lat: {0}  Long: {1}", positionUser.Latitude, positionUser.Longitude));
 
-                if (positionUser != null)
-                {
-                    Console.WriteLine(string.Format("DevLoc_Lat: {0}  Long: {1}", positionUser.Latitude, positionUser.Longitude));
-
-                    return new Position(positionUser.Latitude, positionUser.Longitude);
-
-
+                return new Position(positionUser.Latitude, positionUser.Longitude);
 
 
                     //Console.WriteLine("Dev_Dist:" + d.Meters);
-                }
-                else
-                {
-                    Console.WriteLine("DevLoc_Lat:null");
-                    return new Position();
-                }
+                //}
+                //else
+                //{
+
+                //    Console.WriteLine("DevLoc_Lat:null");
+                //    return new Position();
+                //}
                 //textLocation.Text = string.Format("Lat: {0}  Long: {1}", position.Latitude, position.Longitude);
 
 
@@ -207,7 +252,7 @@ namespace Fourplaces.ViewModels
             {
                 //textLocation.Text = "Unable to get location: " + ex.ToString();
                 Console.WriteLine("DevLoc_Unable to get location: " + ex.ToString());
-                return new Position();
+                throw new AuthenticationException("impossible d'obtenir une localisation gps");
 
             }
         }
@@ -341,16 +386,20 @@ namespace Fourplaces.ViewModels
 
         public override Task OnResume()
         {
+            EXCEPTION = "";
+            LPIS = null;
             Console.WriteLine("MainViewModel");
 
             Task t = FindData();
 
             if (SingletonLoginResult.LR != null)
             {
+                IsVisible = true;
                 Console.WriteLine("Dev_CPAccessToken:" + SingletonLoginResult.LR.AccessToken);
             }
             else
             {
+                IsVisible = false;
                 Console.WriteLine("Dev_MVMPasEncoreConnecte");
             }
             return base.OnResume();

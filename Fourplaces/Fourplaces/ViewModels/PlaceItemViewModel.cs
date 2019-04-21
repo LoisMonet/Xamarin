@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Storm.Mvvm;
@@ -23,6 +24,8 @@ namespace Fourplaces.ViewModels
         private ImageSource imageP;
 
         private CustomMap map;
+        private string exception;
+        private bool _isVisible;
 
         [NavigationParameter] //see that later
         public PlaceItemSummary PIS
@@ -37,6 +40,19 @@ namespace Fourplaces.ViewModels
                 //Task t = FindPlaceItem(pis.Id); //LATER MAYBE USE IT BECAUSE WITH ONRESUME TO LONG TO SWITCH PAGE
 
 
+            }
+        }
+
+        public Boolean IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                SetProperty(ref _isVisible, value);
             }
         }
 
@@ -111,6 +127,19 @@ namespace Fourplaces.ViewModels
             }
         }
 
+        public String EXCEPTION
+        {
+            get
+            {
+                return exception;
+            }
+
+            set
+            {
+                SetProperty(ref exception, value);
+            }
+        }
+
 
         public PlaceItemViewModel()
         //public PlaceItemViewModel(int id)
@@ -163,19 +192,21 @@ namespace Fourplaces.ViewModels
 
         public async void AddComment()
         {
-            if (SingletonLoginResult.LR != null)
+            try
             {
                 //Initialize(new Dictionary<string, object> { "test":"testE"})
                 Console.WriteLine("Dev_Comm:" + PI.Id + "|" + INPUTCOM);
                 await SingletonRestService.RS.SendCommentDataAsync(PI.Id, INPUTCOM, SingletonLoginResult.LR);
                 //Console.WriteLine("Dev_OnResumeBef:" + PIS.Id);
-                await OnResume(); 
+                await OnResume();
             }
-            else
-            { 
-                Console.WriteLine("Dev_ACPasEncoreConnecte:");
+            catch (AuthenticationException ae)
+            {
 
+                EXCEPTION=ae.ExceptionMess;
             }
+
+
 
         }
 
@@ -193,6 +224,16 @@ namespace Fourplaces.ViewModels
             //Console.WriteLine("Dev_OnResume:" +PIS.Id);
             INPUTCOM = "";
             Task t = FindPlaceItem(PIS.Id); //Work on that later
+
+            if (SingletonLoginResult.LR != null)
+            {
+                IsVisible = true;
+            }
+            else
+            {
+                IsVisible = false;
+            }
+
             return base.OnResume();
         }
 
