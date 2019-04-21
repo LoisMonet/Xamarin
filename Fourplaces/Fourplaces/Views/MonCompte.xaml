@@ -8,12 +8,11 @@
         
         <StackLayout>
         
-            <Label Text="Mon Compte"/>
+            <Label Text="Mon Compte" HorizontalTextAlignment="Center"/>
             <Image Source="{Binding USER.SOURCEIMAGE}" WidthRequest="200" HeightRequest="200" />
-            <Label Text="{Binding USER.FirstName,StringFormat='First Name:{0}'}"  />
-            <Label Text="{Binding USER.LastName,StringFormat='Last Name:{0}'}"  />
-            <Label Text="{Binding USER.Email,StringFormat='email:{0}'}"  />
-            <Label Text="{Binding USER.ImageId,StringFormat='Image Id:{0}'}" />
+            <Label Text="{Binding USER.FirstName,StringFormat='Prénom:{0}'}"  />
+            <Label Text="{Binding USER.LastName,StringFormat='Nom:{0}'}"  />
+            <Label Text="{Binding USER.Email,StringFormat='Email:{0}'}"  />
             
             
             <StackLayout Orientation="Horizontal">

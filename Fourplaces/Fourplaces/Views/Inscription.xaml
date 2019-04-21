@@ -8,7 +8,7 @@
     <ContentPage.Content>
         <StackLayout>
         
-            <Label Text="S'inscrire"/>
+            <Label Text="S'inscrire" HorizontalTextAlignment="Center"/>
             <Entry Text="{Binding EMAIL}" Placeholder="Email" />
             <Entry Text="{Binding FNAME}" Placeholder="Prénom" />
             <Entry Text="{Binding LNAME}" Placeholder="Nom" />

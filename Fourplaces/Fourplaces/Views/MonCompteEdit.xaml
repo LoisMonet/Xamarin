@@ -7,7 +7,7 @@
     <ContentPage.Content>
         
         <StackLayout>
-            <Label Text="Editer compte"/>
+            <Label Text="Editer compte" HorizontalTextAlignment="Center"/>
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Label Text="Galerie"/>
                 <Switch IsToggled="{Binding TYPEP}"></Switch>

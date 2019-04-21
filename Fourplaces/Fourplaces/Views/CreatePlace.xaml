@@ -6,8 +6,9 @@
              >
     <ContentPage.Content>
         <StackLayout>
+            
         
-            <Label Text="CreatePlace"/>
+            <Label Text="Ajouter un lieu" HorizontalTextAlignment="Center"/>
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Label Text="Galerie"/>
                 <Switch IsToggled="{Binding TYPEP}"></Switch>

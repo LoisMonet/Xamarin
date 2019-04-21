@@ -6,7 +6,7 @@
                       >
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Editer mot de passe"/>
+            <Label Text="Editer mot de passe" HorizontalTextAlignment="Center"/>
             <Entry Text="{Binding OPWD}" Placeholder="Old password"/>
             <Entry Text="{Binding NPWD}" Placeholder="New password"/>
             <Button Text="modifier" Command="{Binding EDITER}"/>

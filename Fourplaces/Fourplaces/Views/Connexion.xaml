@@ -8,7 +8,7 @@
     <ContentPage.Content>
         <StackLayout>
         
-            <Label Text="Se connecter"/>
+            <Label Text="Se connecter" HorizontalTextAlignment="Center"/>
             <Entry Text="{Binding Email}" Placeholder="email" />
             <Entry Text="{Binding MDP}" Placeholder="mot de passe" />
             <Button Text="OK" Command="{Binding SEND}"/>

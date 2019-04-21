@@ -14,7 +14,7 @@
     </ContentPage.ToolbarItems>
     
     <StackLayout>
-        <Label Text="Bibliothèque de lieux"/>
+        <Label Text="Bibliothèque de lieux" HorizontalTextAlignment="Center"/>
         
         <ListView ItemsSource="{Binding LPIS}"
                   HasUnevenRows="true"
