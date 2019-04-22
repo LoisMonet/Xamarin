@@ -13,7 +13,6 @@ namespace Fourplaces.Views
             InitializeComponent();
             BindingContext = new ConnexionViewModel();
 
-            Console.WriteLine("Connexion");
         }
     }
 }

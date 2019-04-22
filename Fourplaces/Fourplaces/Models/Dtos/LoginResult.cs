@@ -45,12 +45,10 @@ namespace TD.Api.Dtos
             TimeSpan span = _dateExpiresTo.Subtract(now);
             if(span<= TimeSpan.Zero)
             {
-                //Console.WriteLine("Dev_expired:it's over");
                 return true;
             }
             else
             {
-                //Console.WriteLine("Dev_staying:" + span.TotalSeconds);
                 return false;
             }
 

@@ -10,10 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
     <PackageReference Include="Storm.Mvvm.Forms" Version="2.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Xamarin.Forms.Maps" Version="3.6.0.264807" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="3.6.0.344457" />
     <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
     <PackageReference Include="MonkeyCache.SQLite" Version="1.2.0-beta" />
@@ -48,6 +48,9 @@
     <Compile Remove="Views\MapView.xaml.cs" />
     <Compile Remove="Views\MyPage.xaml.cs" />
     <Compile Remove="Views\Connexion.xaml %28copie%29.cs" />
+    <Compile Remove="Models\Exceptions\AuthenticationException.cs" />
+    <Compile Remove="Models\AllData.cs" />
+    <Compile Remove="MainPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\Page1.xaml.cs">

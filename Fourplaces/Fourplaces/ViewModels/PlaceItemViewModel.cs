@@ -27,18 +27,15 @@ namespace Fourplaces.ViewModels
         private string exception;
         private bool _isVisible;
 
-        [NavigationParameter] //see that later
+        [NavigationParameter] 
         public PlaceItemSummary PIS
         {
             get { return pis; }
-            //get { return 1; }
+           
 
             set
             {
-                //Console.WriteLine("SETIDDD:"+value.Id);
                 SetProperty(ref pis, value);
-                //Task t = FindPlaceItem(pis.Id); //LATER MAYBE USE IT BECAUSE WITH ONRESUME TO LONG TO SWITCH PAGE
-
 
             }
         }
@@ -92,7 +89,6 @@ namespace Fourplaces.ViewModels
             set
             {
                 SetProperty(ref inputCom, value);
-                //AddComment();
 
             }
 
@@ -103,7 +99,6 @@ namespace Fourplaces.ViewModels
 
             get
             {
-                //Console.WriteLine("GETPI:"+pi[0].Id);
 
                 return pi;
             }
@@ -142,30 +137,21 @@ namespace Fourplaces.ViewModels
 
 
         public PlaceItemViewModel()
-        //public PlaceItemViewModel(int id)
         {
-            //Task t = FindPlaceItem(1); //Work on that later
-            //Task t = FindPlaceItem(id); //Work on that later
-
-
-            //Task tLoc = GetLocationAsync();
 
         }
 
         private async Task FindPlaceItem(int id)
         {
-            //Console.WriteLine("Dev_FPI_BIS");
 
             try
             {
                 PI = await SingletonRestService.RS.PlaceItemDataAsync(id);
                 CreateMap();
             }
-            //catch (AuthenticationException ae) //no connected
             catch (NoConnectE e) //no connected
             {
                 EXCEPTION = e.ExceptionMess;
-                //Console.WriteLine("DEV_EXCEPTION:" + EXCEPTION);
                 String url = e.urlSave;
                 PI = SingletonRestService.RS.CacheData<PlaceItem>(url);
                 if (PI != null)
@@ -175,15 +161,12 @@ namespace Fourplaces.ViewModels
 
                 if (SingletonLoginResult.LR != null)
                 {
-                    //Console.WriteLine("ISVISIBLETR:"+(PI == null));
                     if (PI == null)
                     {
-                        //Console.WriteLine("ISVISIBLETRUE1");
                         IsVisible = false;
                     }
                     else
                     {
-                        //Console.WriteLine("ISVISIBLETRUE2:");
                         IsVisible = true;
                     }
                 }
@@ -193,21 +176,12 @@ namespace Fourplaces.ViewModels
             {
                 await getImage();
             }
-            //catch (AuthenticationException ae) //no connected
-            catch (NoConnectE e) //no connected
+            catch (NoConnectE e)
             {
-                //Console.WriteLine("DEV_EXCEPTIONIMAGE:" + EXCEPTION);
                 String url = e.urlSave;
                 IMAGEP = SingletonRestService.RS.CacheImage(url);
 
             }
-
-
-
-
-
-
-        //Console.WriteLine("Dev_IDResponse:" + pi.Id);
 
 
         }
@@ -238,13 +212,10 @@ namespace Fourplaces.ViewModels
         {
             try
             {
-                //Initialize(new Dictionary<string, object> { "test":"testE"})
-                //Console.WriteLine("Dev_Comm:" + PI.Id + "|" + INPUTCOM);
+
                 await SingletonRestService.RS.SendCommentDataAsync(PI.Id, INPUTCOM);
-                //Console.WriteLine("Dev_OnResumeBef:" + PIS.Id);
                 await OnResume();
             }
-            //catch (AuthenticationException ae)
             catch (NoConnectE e) //no connected
             {
 
@@ -262,7 +233,6 @@ namespace Fourplaces.ViewModels
 
         public async Task getImage()
         {
-            //Console.WriteLine("Dev_getImage");
             IMAGEP = await SingletonRestService.RS.GetRequestImage(PI.ImageId);
 
 
@@ -278,13 +248,11 @@ namespace Fourplaces.ViewModels
             }
             else
             {
-                //Console.WriteLine("ISVISIBLETRUE3");
                 IsVisible = false;
             }
 
-            //Console.WriteLine("Dev_OnResume:" +PIS.Id);
             INPUTCOM = "";
-            Task t = FindPlaceItem(PIS.Id); //Work on that later
+            Task t = FindPlaceItem(PIS.Id); 
 
 
 

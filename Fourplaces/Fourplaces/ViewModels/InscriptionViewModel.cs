@@ -16,10 +16,10 @@ namespace Fourplaces.ViewModels
         public InscriptionViewModel()
         {
 
-            EMAIL = "test@test.com";
-            FNAME = "FTest";
-            LNAME = "LTest";
-            MDP = "Test";
+            //EMAIL = "test@test.com";
+            //FNAME = "FTest";
+            //LNAME = "LTest";
+            //MDP = "Test";
         }
 
 
@@ -56,19 +56,15 @@ namespace Fourplaces.ViewModels
         {
             try
             {
-                //Console.WriteLine("Dev_Send:" + EMAIL + "|" + FNAME + "|" + LNAME + "|" + MDP);
                 lr = await SingletonRestService.RS.RegisterDataAsync(EMAIL, FNAME, LNAME, MDP);
-                if (lr != null) //IMPROVE AGAIN
+                if (lr != null) 
                 {
                     SingletonLoginResult.destroyLR();
                     SingletonLoginResult.LR = lr;
-                    //Console.WriteLine("Dev_RDAccessToken:" + SingletonLoginResult.LR.AccessToken);
                     await NavigationService.PopAsync();
-                    //await NavigationService.PushAsync(new MainView());
 
                 }
             }
-            //catch(AuthenticationException ae)
             catch (NoConnectE e)
             {
                 EXCEPTION = e.ExceptionMess;

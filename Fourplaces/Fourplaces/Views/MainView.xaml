@@ -24,14 +24,10 @@
                 <DataTemplate>
                    <ViewCell>
                         <StackLayout Orientation="Horizontal">
-<!--                            <Image Source="{Binding ImageId,StringFormat='https://td-api.julienmialon.com/images/{0}'}"> </Image>
--->                         <!--<Image Source="{Binding Source={x:Reference mainview}, Path=BindingContext.ID,StringFormat='https://td-api.julienmialon.com/images/{0}'}"> </Image>
-   -->                      <Image Source="{Binding SOURCEIMAGE}" WidthRequest="80" HeightRequest="80"/>
+                            <Image Source="{Binding SOURCEIMAGE}" WidthRequest="80" HeightRequest="80"/>
                             <StackLayout Orientation="Vertical">
                                 <Label Text="{Binding Title, StringFormat='{0}'}"/>
-                                <!--<Label Text="{Binding Id, StringFormat='Id:{0}'}"/>
-                                <Label Text="{Binding ImageId, StringFormat='ImageId:{0}'}"/>
-                             --><Label Text="{Binding Description  , StringFormat='{0}'}" LineBreakMode="TailTruncation" MaxLines="3"/>
+                                <Label Text="{Binding Description  , StringFormat='{0}'}" LineBreakMode="TailTruncation" MaxLines="3"/>
                         
                             </StackLayout>
                        </StackLayout>

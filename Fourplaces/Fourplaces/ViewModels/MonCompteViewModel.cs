@@ -12,44 +12,23 @@ namespace Fourplaces.ViewModels
 {
     public class MonCompteViewModel : ViewModelBase
     {
-        //public RestService rs;
         private Command _editC;
         private Command _editMDP;
-        //private ImageSource imageP;
         private UserItem _user;
         private string exception;
         private bool _isVisible;
 
         public MonCompteViewModel()
         {
-            if (SingletonLoginResult.LR != null)
-            {
-               // Console.WriteLine("Dev_MCVM" + SingletonLoginResult.LR.AccessToken);
-            }
 
 
             _editC = new Command(() => EditCompte());
             _editMDP = new Command(() => EditMDP());
 
-            //rs = new RestService();
-
-            //Task t = DataUser();
+          
 
         }
 
-
-        /*public ImageSource IMAGEP
-        {
-            get
-            {
-                return imageP;
-            }
-
-            set
-            {
-                SetProperty(ref imageP, value);
-            }
-        }*/
         public String EXCEPTION
         {
             get
@@ -109,13 +88,11 @@ namespace Fourplaces.ViewModels
 
         async private void EditCompte()
         {
-           // Console.WriteLine("EditCompte");
             await NavigationService.PushAsync<MonCompteEdit>(new Dictionary<string, object>() { { "USER", USER } });
         }
 
         async private void EditMDP()
         {
-            //Console.WriteLine("EditMdp");
             await NavigationService.PushAsync<MonMDPEdit>();
         }
 
@@ -125,7 +102,6 @@ namespace Fourplaces.ViewModels
             {
                 USER = await SingletonRestService.RS.UserDataAsync();
             }
-            //catch(AuthenticationException ae) //no connected
             catch (NoConnectE e) //no connected
             {
                 EXCEPTION = e.ExceptionMess;
@@ -141,19 +117,10 @@ namespace Fourplaces.ViewModels
                 IsVisible = true;
             }
 
-            /*Task t=getImage();*/
-
 
 
         }
 
-        /*public async Task getImage()
-        {
-            Console.WriteLine("Dev_getImage");
-            IMAGEP = await SingletonRestService.RS.GetRequestImage(USER.ImageId);
-            //IMAGEP = "profilDef.png";
-
-        }*/
 
         public override Task OnResume()
         {

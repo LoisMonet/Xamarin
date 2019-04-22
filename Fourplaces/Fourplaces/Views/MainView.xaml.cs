@@ -15,29 +15,11 @@ namespace Fourplaces.Views
             InitializeComponent();
             BindingContext = new MainViewModel();
 
-            Console.WriteLine("MainView");
 
 
 
         }
-        /*async private void MainListView_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            var Selected = e.Item as PlaceItemSummary;
 
-            Console.WriteLine("Dev_MVID:" + Selected.Id);
-
-            Console.WriteLine("Dev_MVLATLONG:" + Selected.Latitude+"|"+Selected.Longitude);
-
-            await Navigation.PushAsync(new PlaceItemView(Selected));
-
-
-
-        }*/
-
-
-
-
-    
     }
 
 }

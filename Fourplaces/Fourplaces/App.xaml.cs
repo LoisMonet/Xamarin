@@ -15,7 +15,6 @@ namespace Fourplaces
         {
             InitializeComponent();
 
-            //MainPage = new NavigationPage(new MainView());
         }
 
 

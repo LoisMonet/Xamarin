@@ -11,7 +11,6 @@ namespace Fourplaces.ViewModels
     public class MonMDPEditViewModel : ViewModelBase
     {
 
-        //private UpdatePasswordRequest _upr;
         private Command _editer;
         private string exception;
         private string _reussi;
@@ -71,7 +70,6 @@ namespace Fourplaces.ViewModels
                 await SingletonRestService.RS.EditPWAsync(OPWD, NPWD);
                 Reussi = "Modification effectuée";
             }
-            //catch(AuthenticationException ae)
             catch (NoConnectE e)
             {
                 EXCEPTION = e.ExceptionMess;

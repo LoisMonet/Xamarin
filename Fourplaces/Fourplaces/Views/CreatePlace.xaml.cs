@@ -14,7 +14,6 @@ namespace Fourplaces.Views
             InitializeComponent();
             BindingContext = new CreatePlaceViewModel();
 
-            Console.WriteLine("CreatePlace");
         }
     }
 }

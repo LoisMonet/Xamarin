@@ -26,8 +26,6 @@ namespace Fourplaces.Models
         public String url= "https://td-api.julienmialon.com/";
         public RestService()
         {
-            
-            //Console.WriteLine("RestService");
 
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
@@ -40,21 +38,16 @@ namespace Fourplaces.Models
             var uri = new Uri(string.Format(url + "places", string.Empty));
 
             CheckInternetConnectionForCache(uri.ToString());
-            //CheckInternetConnection();
 
             var response = await client.GetAsync(uri);
 
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                //Console.WriteLine("Dev_Refresh:" + content);
                 Barrel.Current.Add(key: uri.ToString(), data: content, expireIn: TimeSpan.FromDays(1));
                 Response < List<PlaceItemSummary> > r = JsonConvert.DeserializeObject< Response<List<PlaceItemSummary>>>(content);
 
 
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
                 return r.Data;
 
 
@@ -68,18 +61,13 @@ namespace Fourplaces.Models
 
         public async Task<PlaceItem> PlaceItemDataAsync(int id)
         {
-            //CheckInternetConnection();
 
             var uri = new Uri(string.Format(url + "places/" + id, string.Empty));
 
             CheckInternetConnectionForCache(uri.ToString());
 
-
-            //Console.WriteLine("Dev_BefResp:");
-
             var response = await client.GetAsync(uri);
 
-            //Console.WriteLine("Dev_statusCode:" + response.IsSuccessStatusCode);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -87,10 +75,7 @@ namespace Fourplaces.Models
                 Barrel.Current.Add(key: uri.ToString(), data: content, expireIn: TimeSpan.FromDays(1));
 
                 Response<PlaceItem> r = JsonConvert.DeserializeObject<Response<PlaceItem>>(content);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
-
+      
                 return r.Data;
             }
 
@@ -104,17 +89,13 @@ namespace Fourplaces.Models
 
             await isConnected();
 
-            if (string.IsNullOrEmpty(comment)) //SEE AGAIN
+            if (string.IsNullOrEmpty(comment))
             {
-                //Console.WriteLine("Exception:" + oldPW + "|" + newPW);
 
-                //throw new AuthenticationException("Le champ commentaire est vide"); //SEE AGAIN THIS METHOD LATER
                 throw new Exception("Le champ commentaire est vide");
             }
 
             var uri = new Uri(string.Format(url + "places/" + id+"/comments", string.Empty));
-
-            //Console.WriteLine("Dev_SCDBefResp:");
 
             CreateCommentRequest ccr = new CreateCommentRequest();
             ccr.Text = comment;
@@ -128,22 +109,11 @@ namespace Fourplaces.Models
             HttpResponseMessage response = await client.SendAsync(request);
 
             string result = await response.Content.ReadAsStringAsync();
-            //Console.WriteLine("Dev_token:"+SingletonLoginResult.LR.AccessToken);
-            //Console.WriteLine("Dev_SCDResponse:" + result);
-            //Console.WriteLine("Dev_SCDStatusCode:" + response.StatusCode);
+
             if (response.IsSuccessStatusCode)
             {
                 Response r = JsonConvert.DeserializeObject<Response>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
-                //return true;
-                /*if (d.is_success)
-                {
-
-                    //return d.data;
-                }*/
 
             }
             else
@@ -168,13 +138,11 @@ namespace Fourplaces.Models
 
             if (imageData == null)
             {
-                //throw new AuthenticationException("Vous n'avez pas ajouté d'image");
                 throw new AddPlaceE("Vous n'avez pas ajouté d'image");
             }
 
             if (nom == ""|| description == "" || string.IsNullOrEmpty(lattitude)|| string.IsNullOrEmpty(longitude))
             {
-                //throw new AuthenticationException(nom,description, lattitude, longitude,0); //SEE AGAIN THIS METHOD LATER
                 throw new AddPlaceE(nom, description, lattitude, longitude);
             }
 
@@ -183,7 +151,6 @@ namespace Fourplaces.Models
             double lattitudeD;
             double longitudeD;
 
-            //Console.WriteLine("Dev_SendPlaceData:lattitude:" + lattitude + "|longitude:" + longitude);
             try
             {
                 lattitudeD = double.Parse(lattitude, System.Globalization.CultureInfo.InvariantCulture);
@@ -191,14 +158,12 @@ namespace Fourplaces.Models
 
                 if (lattitudeD > 90 || lattitudeD < -90 || longitudeD > 180 || longitudeD < -180 || lattitudeD.Equals(0) || longitudeD.Equals(0))
                 {
-                    //throw new AuthenticationException(lattitudeD, longitudeD);
                     throw new AddPlaceE(lattitudeD, longitudeD);
                 }
 
             }
             catch (System.FormatException)
             {
-                //throw new AuthenticationException("mauvais format de la latitude ou de la longitude(ex 5 ou 5.2)");
                 throw new AddPlaceE("mauvais format de la latitude ou de la longitude(ex 5 ou 5.2)");
             }
 
@@ -211,11 +176,9 @@ namespace Fourplaces.Models
             ImageItem iItem= await UploadImage(imageData);
             cpr.ImageId =iItem.Id ;
 
-            //cpr.ImageId = 37;
             cpr.Latitude = lattitudeD;
             cpr.Longitude = longitudeD;
 
-            //Console.WriteLine("Dev_SendPlaceData:lattitudeD:" + lattitudeD + "|longitudeD:" + longitudeD+"|imageId:"+cpr.ImageId);
 
             var jsonRequest = JsonConvert.SerializeObject(cpr);
 
@@ -229,21 +192,13 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            //Console.WriteLine("Dev_RDResponse:" + result);
-            //Console.WriteLine("Dev_RDStatusCode:" + response.StatusCode); 
             if (response.IsSuccessStatusCode)
             {
                 Response r  = JsonConvert.DeserializeObject<Response>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+         
 
                 return true;
-                /*if (d.is_success)
-                {
 
-                    //return d.data;
-                }*/
 
             }
             else
@@ -253,7 +208,7 @@ namespace Fourplaces.Models
             }
 
             return false;
-            //return null;
+
 
 
 
@@ -289,14 +244,7 @@ namespace Fourplaces.Models
                     file = await CrossMedia.Current.PickPhotoAsync(galleryMediaOptions);
 
                 }
-                
 
-                //if (file == null) MODIFY CODE HERE ELSE NULL IF QUIT PICTURE
-                //{
-                //    file = "profileDef.png";
-                //}
-                //Console.WriteLine("picture:");
-                //Console.WriteLine("picture:" + file);
                 if (file != null)
                 {
                     var stream = file.GetStream();
@@ -308,15 +256,12 @@ namespace Fourplaces.Models
                 return null;
 
 
-
-
-                //return file;
             }
 
             return null;
         }
 
-        public byte[] GetImageStreamAsBytes(Stream input) //Put in private later
+        public byte[] GetImageStreamAsBytes(Stream input) 
         {
             var buffer = new byte[16 * 1024];
             using (MemoryStream ms = new MemoryStream())
@@ -334,10 +279,6 @@ namespace Fourplaces.Models
         {
             CheckInternetConnection();
 
-            //Stream mf=await SendPicture(camera);
-            //byte[] imageData = GetImageStreamAsBytes(mf);
-            //byte[] imageData = await client.GetByteArrayAsync("https://bnetcmsus-a.akamaihd.net/cms/blog_header/x6/X6KQ96B3LHMY1551140875276.jpg");
-            //byte[] imageData = mf.GetStream;
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://td-api.julienmialon.com/images");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SingletonLoginResult.LR.AccessToken);
@@ -356,16 +297,12 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            //Console.WriteLine("Dev_RDResponse:" + result);
-            //Console.WriteLine("Dev_RDStatusCode:" + response.StatusCode);
+          
 
             if (response.IsSuccessStatusCode)
             {
-                //Console.WriteLine("Image uploaded!");
                 Response<ImageItem> r = JsonConvert.DeserializeObject<Response<ImageItem>>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+             
 
                 return r.Data;
             }
@@ -382,17 +319,11 @@ namespace Fourplaces.Models
 
             var uri = new Uri(string.Format(url + "auth/register", string.Empty));
 
-            //CheckInternetConnectionForCache(uri.ToString());
 
             if (email == "" || mdp == "" || fname=="" || mdp=="")
             {
-                //throw new AuthenticationException(email, mdp,fname,lname);
                 throw new RegisterE(email, mdp, fname, lname);
             }
-
-
-
-            //Console.WriteLine("Dev_RegisterData:");
 
 
 
@@ -405,7 +336,6 @@ namespace Fourplaces.Models
 
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "text/json");
-            //var response = client.PostAsync(uri, content).Result;
 
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -419,13 +349,10 @@ namespace Fourplaces.Models
             if (response.IsSuccessStatusCode)
             {
                 Barrel.Current.Add(key: "LoginResult", data: result, expireIn: TimeSpan.FromDays(1));
-                Barrel.Current.Empty(key: "Account"); //Test
+                Barrel.Current.Empty(key: "Account"); 
 
-                //Console.WriteLine("Dev_RDResponse:" + result);
                 Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+            
 
                 if (r.IsSuccess) { 
 
@@ -433,20 +360,18 @@ namespace Fourplaces.Models
                 }
                 
             }
-            //throw new AuthenticationException("email déjà pris");
             throw new RegisterE("email déjà pris");
 
         }
 
 
-        public async Task RefreshAsync() //need to be call everytime
+        public async Task RefreshAsync() 
         {
             CheckInternetConnection();
 
 
             var uri = new Uri(string.Format(url + "auth/refresh", string.Empty));
 
-           // Console.WriteLine("Dev_Refresh:");
 
 
 
@@ -456,7 +381,6 @@ namespace Fourplaces.Models
 
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "text/json");
-            //var response = client.PostAsync(uri, content).Result;
 
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -469,11 +393,8 @@ namespace Fourplaces.Models
 
             if (response.IsSuccessStatusCode)
             {
-                //Console.WriteLine("Dev_RDResponse:" + result);
                 Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+           
 
                 if (r.IsSuccess)
                 {
@@ -481,7 +402,6 @@ namespace Fourplaces.Models
 
                     SingletonLoginResult.destroyLR();
                     SingletonLoginResult.LR = r.Data;
-                    //Console.WriteLine("DevRefffresh:"+ SingletonLoginResult.LR.AccessToken);
                 }
 
             }
@@ -495,17 +415,14 @@ namespace Fourplaces.Models
 
             var uri = new Uri(string.Format(url + "auth/login", string.Empty));
 
-            //CheckInternetConnectionForCache(uri.ToString());
 
             if (email=="" || mdp == "")
             {
-                //throw new AuthenticationException(email,mdp);
                 throw new ConnexionE(email, mdp);
             }
 
 
 
-            //Console.WriteLine("Dev_ConnexionData:");
 
 
             LoginRequest lr = new LoginRequest();
@@ -517,7 +434,6 @@ namespace Fourplaces.Models
 
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "text/json");
-            //var response = client.PostAsync(uri, content).Result;
 
 
 
@@ -534,12 +450,8 @@ namespace Fourplaces.Models
                 Barrel.Current.Add(key: "LoginResult", data: result, expireIn: TimeSpan.FromDays(1));
                 Barrel.Current.Empty(key: "Account");
 
-               // Console.WriteLine("Dev_CDResponse:" + result);
                 Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
-
+    
                 if (r.IsSuccess)
                 {
 
@@ -551,7 +463,6 @@ namespace Fourplaces.Models
 
             }
 
-            //throw new AuthenticationException("mauvais email ou mot de passe");
             throw new ConnexionE("mauvais email ou mot de passe");
 
         }
@@ -575,12 +486,8 @@ namespace Fourplaces.Models
 
             if (response.IsSuccessStatusCode)
             {
-                //Console.WriteLine("Dev_UDResponse:" + result);
                 Response<UserItem> r = JsonConvert.DeserializeObject<Response<UserItem>>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
-
+      
                 if (r.IsSuccess)
                 {
                     Barrel.Current.Add(key: "Account", data: result, expireIn: TimeSpan.FromDays(1));
@@ -610,20 +517,17 @@ namespace Fourplaces.Models
 
             if (FName == "" || LName == "")
             {
-                //throw new AuthenticationException(FName, LName, 0); //SEE AGAIN THIS METHOD LATER
                 throw new EditCompteE(FName, LName);
             }
 
             var uri = new Uri(string.Format(url + "me", string.Empty));
-
-           // Console.WriteLine("Dev_ECA:");
 
 
             UpdateProfileRequest upr = new UpdateProfileRequest();
             upr.FirstName = FName;
             upr.LastName = LName;
 
-            if (imageData == null) //ne pas mettre a jour l'image de profil
+            if (imageData == null) 
             {
                 upr.ImageId = imageId;
             }
@@ -641,7 +545,6 @@ namespace Fourplaces.Models
 
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "text/json");
-            //var response = client.PostAsync(uri, content).Result;
 
 
 
@@ -652,17 +555,12 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            //Console.WriteLine("Dev_ECAesponse:" + result);
-            //Console.WriteLine("Dev_ECAtatusCode:" + response.StatusCode);
+        
 
             if (response.IsSuccessStatusCode)
             {
-               // Console.WriteLine("Dev_ECAResponse:" + result);
                 Response<UserItem> r = JsonConvert.DeserializeObject<Response<UserItem>>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
-
+              
                 if (r.IsSuccess)
                 {
                     Barrel.Current.Add(key: "Account", data: result, expireIn: TimeSpan.FromDays(1));
@@ -691,8 +589,7 @@ namespace Fourplaces.Models
 
             if (oldPW==null || newPW==null || oldPW=="" ||newPW=="") //SEE AGAIN
             {
-                //Console.WriteLine("Exception:" + oldPW + "|" + newPW);
-                //throw new AuthenticationException(oldPW, newPW, true); //SEE AGAIN THIS METHOD LATER
+          
                 throw new PwdCompteE(oldPW, newPW);
             }
 
@@ -709,7 +606,6 @@ namespace Fourplaces.Models
 
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "text/json");
-            //var response = client.PostAsync(uri, content).Result;
 
 
 
@@ -720,16 +616,12 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            //Console.WriteLine("Dev_ECAesponse:" + result);
-            //Console.WriteLine("Dev_ECAtatusCode:" + response.StatusCode);
+      
 
             if (response.IsSuccessStatusCode)
             {
-               // Console.WriteLine("Dev_ECAResponse:" + result);
                 Response<UserItem> r = JsonConvert.DeserializeObject<Response<UserItem>>(result);
-                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+             
 
                 if (r.IsSuccess)
                 {
@@ -742,7 +634,6 @@ namespace Fourplaces.Models
 
             }
 
-            //throw new AuthenticationException("L'ancien mot de passe n'est pas correct");
             throw new PwdCompteE("L'ancien mot de passe n'est pas correct");
 
         }
@@ -750,12 +641,10 @@ namespace Fourplaces.Models
         public async Task<ImageSource> GetRequestImage(int id)
         {
             var uri = new Uri(string.Format(url + "images/" + id, string.Empty));
-            //CheckInternetConnection();
             CheckInternetConnectionForCache(uri.ToString());
 
             if (Barrel.Current.Exists(uri.ToString())) //cache exist already
             {
-               // Console.WriteLine("Dev_Exists:"+uri.ToString());
                 var content = Barrel.Current.Get<byte[]>(key: uri.ToString());
 
                 ImageSource ims = ImageSource.FromStream(() => new MemoryStream(content));
@@ -764,21 +653,15 @@ namespace Fourplaces.Models
             }
             else //download image
             {
-               // Console.WriteLine("Dev_GetRequestImage:" + id);
-
-
-
-
+              
                 var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-                //Console.WriteLine("Dev_GetRequestImageNothing");
-                //Console.WriteLine("Dev_GetRequestImageGetURI:" + response.StatusCode);
-                //Console.WriteLine("Dev_GetRequestImageStatus:" + response.IsSuccessStatusCode);
+
 
                 if (response.IsSuccessStatusCode)
                 {
                     byte[] content = await response.Content.ReadAsByteArrayAsync();
 
-                    //Console.WriteLine("Dev_ImageAll:");
+
 
                     ImageSource ims = ImageSource.FromStream(() => new MemoryStream(content));
 
@@ -799,7 +682,6 @@ namespace Fourplaces.Models
         public async Task<ImageSource> GetRequestImageProfil(int? id)
         {
             var uri = new Uri(string.Format(url + "images/" + id, string.Empty));
-            //CheckInternetConnection();
             CheckInternetConnectionForCache(uri.ToString());
 
             if (id == null)
@@ -808,21 +690,13 @@ namespace Fourplaces.Models
             }
             else //download image
             {
-                //Console.WriteLine("Dev_GetRequestImageProfil:" + id);
-
-
-
-
+               
                 var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-                //Console.WriteLine("Dev_GetRequestImageProfilNothing");
-                //Console.WriteLine("Dev_GetRequestImageProfilGetURI:" + response.StatusCode);
-                //Console.WriteLine("Dev_GetRequestImageProfilStatus:" + response.IsSuccessStatusCode);
+
 
                 if (response.IsSuccessStatusCode)
                 {
                     byte[] content = await response.Content.ReadAsByteArrayAsync();
-
-                    //Console.WriteLine("Dev_ImageAll:");
 
                     ImageSource ims = ImageSource.FromStream(() => new MemoryStream(content));
 
@@ -846,7 +720,6 @@ namespace Fourplaces.Models
         {
             if(Barrel.Current.Exists("LoginResult") && firstCo)
             {
-                //Console.WriteLine("Dev_refreshForCache");
                 await RefreshAsync();
             }
 
@@ -855,14 +728,11 @@ namespace Fourplaces.Models
             if (SingletonLoginResult.LR == null)
             {
 
-                //throw new AuthenticationException("vous n'êtes pas connecté");
                 throw new Exception("vous n'êtes pas connecté à un compte");
 
 
             }
-            //Console.WriteLine("Dev_OldconnectedToken:" + SingletonLoginResult.LR.AccessToken);
-            //await RefreshAsync();
-            //Console.WriteLine("Dev_connectedToken:" + SingletonLoginResult.LR.AccessToken);
+           
             if (SingletonLoginResult.LR.IsExpired())
             {
                 await RefreshAsync();
@@ -884,15 +754,11 @@ namespace Fourplaces.Models
 
                 WebResponse testResponse = testRequest.GetResponse();
 
-                // Console.WriteLine ("...connection established..." + iNetRequest.ToString ());
                 testResponse.Close();
 
             }
-            catch (WebException ex)
+            catch (WebException)
             {
-                //Console.WriteLine("Dev_checkCo:"+ex.Message); 
-
-                //throw new AuthenticationException("vous n'êtes pas connecté à internet");
                 throw new NoConnectE("vous n'êtes pas connecté à internet");
             }
         }
@@ -909,15 +775,11 @@ namespace Fourplaces.Models
 
                 WebResponse testResponse = testRequest.GetResponse();
 
-                // Console.WriteLine ("...connection established..." + iNetRequest.ToString ());
                 testResponse.Close();
 
             }
-            catch (WebException ex)
+            catch (WebException)
             {
-                //Console.WriteLine("Dev_checkCo:" + ex.Message);
-
-                //throw new AuthenticationException(urlSave,0);
                 throw new NoConnectE(urlSave, "vous n'êtes pas connecté à internet");
             }
         }

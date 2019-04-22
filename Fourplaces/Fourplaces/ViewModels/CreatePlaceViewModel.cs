@@ -14,16 +14,10 @@ namespace Fourplaces.ViewModels
 {
     public class CreatePlaceViewModel : ViewModelBase
     {
-        /*private String nom;
-        private String description;
-        private String image;
-        private String latitude;
-        private String longitude;*/
 
         private ImageSource _image;
         private byte[] imageB;
-        //private Command _sendWPicture;
-        //private Command _sendWGallery;
+
         private Command _send;
         private Command _picture;
 
@@ -37,15 +31,10 @@ namespace Fourplaces.ViewModels
         {
           
 
-            NOM = "Test";
-            DESCRIPTION = "t";
             Task t =  GetLocationAsync();
 
-
-
             IMAGE = "placeDef.png";
-            //_sendWGallery = new Command(() => SendPlaceWGallery());
-            //_sendWPicture = new Command(() => SendPlaceWCamera());
+
             _send = new Command(() => Send());
             _picture = new Command(() => ChoosePicture());
 
@@ -71,7 +60,7 @@ namespace Fourplaces.ViewModels
 
         }
 
-        public bool TYPEP //SEE AGAIN SWITCH GALLERY Camera
+        public bool TYPEP 
         {
             get
             {
@@ -115,22 +104,6 @@ namespace Fourplaces.ViewModels
         }
 
 
-        //public Command SENDWPICTURE
-        //{
-        //    get
-        //    {
-        //        return _sendWPicture;
-        //    }
-        //}
-
-        //public Command SENDWGALLERY
-        //{
-        //    get
-        //    {
-        //        return _sendWGallery;
-        //    }
-        //}
-
         public Command SEND
         {
             get
@@ -160,51 +133,6 @@ namespace Fourplaces.ViewModels
             }
         }
 
-        //public async void SendPlaceWCamera()
-        //{
-
-        //    Console.WriteLine("Dev_Send:" + NOM + "|" + DESCRIPTION + "|" + IMAGE + "|" + LATITUDE + "|" + LONGITUDE);
-
-        //    if (SingletonLoginResult.LR != null)
-        //    {
-        //        Console.WriteLine("Dev_CPAccessToken:" + SingletonLoginResult.LR.AccessToken);
-        //        bool send=await SingletonRestService.RS.SendPlaceDataAsync(NOM, DESCRIPTION, LATITUDE, LONGITUDE, SingletonLoginResult.LR, true);
-        //        if (send)
-        //        {
-        //            await NavigationService.PopAsync();
-        //            //await NavigationService.PushAsync(new MainView());
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Dev_CPPasEncoreConnecte:");
-        //    }
-
-        //}
-
-        //public async void SendPlaceWGallery()
-        //{
-
-        //    Console.WriteLine("Dev_Send:" + NOM + "|" + DESCRIPTION + "|" + IMAGE + "|" + LATITUDE + "|" + LONGITUDE);
-
-        //    if (SingletonLoginResult.LR != null)
-        //    {
-        //        Console.WriteLine("Dev_CPAccessToken:" + SingletonLoginResult.LR.AccessToken);
-        //        bool send = await SingletonRestService.RS.SendPlaceDataAsync(NOM, DESCRIPTION, LATITUDE, LONGITUDE, SingletonLoginResult.LR, false);
-        //        if (send)
-        //        {
-        //            await NavigationService.PopAsync();
-        //            //await NavigationService.PushAsync(new MainView());
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Dev_CPPasEncoreConnecte:");
-        //    }
-
-        //}
 
         public async void Send()
         {
@@ -230,27 +158,22 @@ namespace Fourplaces.ViewModels
                 if (send)
                 {
                     await NavigationService.PopAsync();
-                    //await NavigationService.PushAsync(new MainView());
                 }
 
                
 
             }
-            //catch(AuthenticationException ae)
             catch (NoConnectE e)
             {
                 EXCEPTION = e.ExceptionMess;
-               // Console.WriteLine("Dev_Exception:" + EXCEPTION);
             }
             catch (AddPlaceE e)
             {
                 EXCEPTION = e.ExceptionMess;
-                //Console.WriteLine("Dev_Exception:" + EXCEPTION);
             }
             catch (Exception e)
             {
                 EXCEPTION = e.Message;
-                //Console.WriteLine("Dev_Exception:" + EXCEPTION);
             }
 
 
@@ -269,44 +192,29 @@ namespace Fourplaces.ViewModels
         }
 
 
-        //find a mean to get location before to sort when you have permission asked else bad sort maybe 
-        //using TimeSpan.FromSeconds(20000)
         async Task GetLocationAsync()
         {
-            //textLocation.Text = "Getting Location";
             Console.WriteLine("DevLoc_Getting Location");
             try
             {
                 var locator = CrossGeolocator.Current;
                 locator.DesiredAccuracy = 100;
 
-                var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(5));
+                var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(0.5f));
                 positionUser = position;
-                //positionUser = null;
-
-
-                //if (positionUser != null)
-                //{
+              
                 Console.WriteLine(string.Format("DevLoc_Lat: {0}  Long: {1}", positionUser.Latitude, positionUser.Longitude));
-                LATITUDE = positionUser.Latitude.ToString().Replace(",","."); //SEE AGAIN MAYBE
+                LATITUDE = positionUser.Latitude.ToString().Replace(",","."); 
                 LONGITUDE = positionUser.Longitude.ToString().Replace(",", ".");
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                //textLocation.Text = "Unable to get location: " + ex.ToString();
-                Console.WriteLine("DevLoc_Unable to get location: " + ex.ToString());
-                throw new AuthenticationException("impossible d'obtenir une localisation gps");
+                throw new Exception("impossible d'obtenir une localisation gps");
 
             }
         }
-
-        //async void OnActionSheetSimpleClicked(object sender, EventArgs e) SEET ALERT LATER
-        //{
-        //    string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Email", "Twitter", "Facebook");
-        //    Debug.WriteLine("Action: " + action);
-        //}
 
 
     }

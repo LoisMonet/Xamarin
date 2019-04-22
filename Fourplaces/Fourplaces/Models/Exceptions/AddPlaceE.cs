@@ -43,13 +43,11 @@ namespace Fourplaces.Models.Exceptions
 
             if (lat > 90 || lat < -90)
             {
-                //Console.WriteLine("Dev_Exception:"+lat+"|"+(lat+10));
                 exceptionMess += "\nla latitude doit être comprise entre -90 et 90";
 
             }
             if (longi > 180 || longi < -180)
             {
-                //Console.WriteLine("Dev_Exception:" + longi + "|" + (lat + 10));
                 exceptionMess += "\nla longitude doit être comprise entre 180 et -180";
 
             }

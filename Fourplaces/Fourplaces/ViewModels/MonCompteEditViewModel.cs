@@ -23,15 +23,13 @@ namespace Fourplaces.ViewModels
         private string exception;
         private string _reussi;
 
-        //private String imageId;
 
 
 
         public MonCompteEditViewModel()
         {
 
-            //Task t = UserData();
-            //Console.WriteLine("Dev_MCEVM:" + USER.Email);
+    
             _editer = new Command(() => Editer());
             _picture = new Command(() => ChoosePicture());
 
@@ -76,10 +74,8 @@ namespace Fourplaces.ViewModels
             }
             set
             {
-                //Console.WriteLine("mcevm:" + value.FirstName);
                 SetProperty(ref _user, value);
                 IMAGE = USER.SOURCEIMAGE;
-                //IMAGEID=USER.ImageId.ToString();
 
 
 
@@ -116,22 +112,6 @@ namespace Fourplaces.ViewModels
             }
         }
 
-        //public String IMAGEID
-        //{
-
-        //    get
-        //    {
-        //        Console.WriteLine("IMAGEIDC:" + imageId);
-        //        return imageId;
-
-        //    }
-        //    set
-        //    {
-        //        SetProperty(ref imageId, value);
-
-
-        //    }
-        //}
 
         public Command EDITER
         {
@@ -153,14 +133,11 @@ namespace Fourplaces.ViewModels
         {
             EXCEPTION = "";
             Reussi = "";
-            //USER.ImageId = int.Parse(IMAGEID, System.Globalization.CultureInfo.InvariantCulture);
             try
             {
-               // Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName + "|");
                 await SingletonRestService.RS.EditCountAsync(USER.FirstName, USER.LastName, USER.ImageId, imageB);
                 Reussi = "Modification effectuée";
             }
-            //catch(AuthenticationException ae)
             catch (NoConnectE e)
             {
                 EXCEPTION = e.ExceptionMess;
@@ -184,7 +161,6 @@ namespace Fourplaces.ViewModels
             {
                 IMAGE = ImageSource.FromStream(() => new MemoryStream(imageB));
             }
-           // Console.WriteLine("Dev_ChoosePicture");
         }
 
     }

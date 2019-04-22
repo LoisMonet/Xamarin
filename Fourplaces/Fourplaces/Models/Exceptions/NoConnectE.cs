@@ -11,7 +11,6 @@ namespace Fourplaces.Models.Exceptions
             exceptionMess = message;
         }
 
-        //NoConnectCacheE(String url,float a)
         public NoConnectE(String url, float a) //no connect for cache
         {
             exceptionMess = "vous n'êtes pas connecté à internet";
@@ -20,7 +19,7 @@ namespace Fourplaces.Models.Exceptions
 
         }
 
-        //for cache connect better
+
         public NoConnectE(String url, String message) 
         {
             exceptionMess = message;
