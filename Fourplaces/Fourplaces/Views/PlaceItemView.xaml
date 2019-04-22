@@ -6,23 +6,26 @@
             
         
         <StackLayout>  
-            <ScrollView>
-                   <StackLayout>
-                        <Image Source="{Binding IMAGEP}" WidthRequest="200" HeightRequest="200"/>
-                        <Label Text="{Binding PI.Title}"/>
-                        <Label Text="{Binding PI.Description}"/>
-<!--                    <Label Text="{Binding PI.Latitude, StringFormat='latitude:{0}'}"/>
---><!--                 <Label Text="{Binding PI.Longitude, StringFormat='Longitude:{0}'}"/>
--->                </StackLayout>
-            </ScrollView>  
-                   <StackLayout> 
-                        <!--<maps:Map WidthRequest="320" HeightRequest="200"
-                            x:Name="mapPlace"
-                            IsShowingUser="true"
-                            MapType="Hybrid" />-->
-                        <ContentView Content="{Binding MAP}"/>
-                   </StackLayout>
-                    
+                 <ScrollView MinimumWidthRequest="300">
+                    <StackLayout>  
+                       <StackLayout>
+                            <Image Source="{Binding IMAGEP}" WidthRequest="150" HeightRequest="150"/>
+                       </StackLayout>
+                       <StackLayout>
+                            <Label Text="{Binding PI.Title}"/>
+                            <Label Text="{Binding PI.Description}"/>
+        <!--                    <Label Text="{Binding PI.Latitude, StringFormat='latitude:{0}'}"/>
+        --><!--                 <Label Text="{Binding PI.Longitude, StringFormat='Longitude:{0}'}"/>
+        -->                
+                            <!--<maps:Map WidthRequest="320" HeightRequest="200"
+                                x:Name="mapPlace"
+                                IsShowingUser="true"
+                                MapType="Hybrid" />-->
+                            <ContentView Content="{Binding MAP}"/>
+                       </StackLayout>
+                      
+                   </StackLayout>  
+                </ScrollView>    
             <StackLayout Orientation="Horizontal">
                 <Entry x:Name="inputC" Text="{Binding INPUTCOM}" Placeholder="Un nouveau commentaire?" IsVisible="{Binding IsVisible}" />
                 <Button Text="OK" Command="{Binding SENDCOM}" IsVisible="{Binding IsVisible}"/>

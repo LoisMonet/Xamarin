@@ -56,13 +56,13 @@ namespace Fourplaces.ViewModels
         {
             try
             {
-                Console.WriteLine("Dev_Send:" + EMAIL + "|" + FNAME + "|" + LNAME + "|" + MDP);
+                //Console.WriteLine("Dev_Send:" + EMAIL + "|" + FNAME + "|" + LNAME + "|" + MDP);
                 lr = await SingletonRestService.RS.RegisterDataAsync(EMAIL, FNAME, LNAME, MDP);
                 if (lr != null) //IMPROVE AGAIN
                 {
                     SingletonLoginResult.destroyLR();
                     SingletonLoginResult.LR = lr;
-                    Console.WriteLine("Dev_RDAccessToken:" + SingletonLoginResult.LR.AccessToken);
+                    //Console.WriteLine("Dev_RDAccessToken:" + SingletonLoginResult.LR.AccessToken);
                     await NavigationService.PopAsync();
                     //await NavigationService.PushAsync(new MainView());
 

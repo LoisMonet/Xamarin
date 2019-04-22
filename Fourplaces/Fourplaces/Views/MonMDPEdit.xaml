@@ -11,6 +11,7 @@
             <Entry Text="{Binding NPWD}" Placeholder="New password"/>
             <Button Text="modifier" Command="{Binding EDITER}"/>
             <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
+            <Label Text="{Binding Reussi}" TextColor="Green"/>
         </StackLayout>
     </ContentPage.Content>
 </mvvm:BaseContentPage>

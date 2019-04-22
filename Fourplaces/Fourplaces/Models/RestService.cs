@@ -27,7 +27,7 @@ namespace Fourplaces.Models
         public RestService()
         {
             
-            Console.WriteLine("RestService");
+            //Console.WriteLine("RestService");
 
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
@@ -47,14 +47,14 @@ namespace Fourplaces.Models
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Dev_Refresh:" + content);
+                //Console.WriteLine("Dev_Refresh:" + content);
                 Barrel.Current.Add(key: uri.ToString(), data: content, expireIn: TimeSpan.FromDays(1));
                 Response < List<PlaceItemSummary> > r = JsonConvert.DeserializeObject< Response<List<PlaceItemSummary>>>(content);
 
 
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
                 return r.Data;
 
 
@@ -75,11 +75,11 @@ namespace Fourplaces.Models
             CheckInternetConnectionForCache(uri.ToString());
 
 
-            Console.WriteLine("Dev_BefResp:");
+            //Console.WriteLine("Dev_BefResp:");
 
             var response = await client.GetAsync(uri);
 
-            Console.WriteLine("Dev_statusCode:" + response.IsSuccessStatusCode);
+            //Console.WriteLine("Dev_statusCode:" + response.IsSuccessStatusCode);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -87,9 +87,9 @@ namespace Fourplaces.Models
                 Barrel.Current.Add(key: uri.ToString(), data: content, expireIn: TimeSpan.FromDays(1));
 
                 Response<PlaceItem> r = JsonConvert.DeserializeObject<Response<PlaceItem>>(content);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 return r.Data;
             }
@@ -114,7 +114,7 @@ namespace Fourplaces.Models
 
             var uri = new Uri(string.Format(url + "places/" + id+"/comments", string.Empty));
 
-            Console.WriteLine("Dev_SCDBefResp:");
+            //Console.WriteLine("Dev_SCDBefResp:");
 
             CreateCommentRequest ccr = new CreateCommentRequest();
             ccr.Text = comment;
@@ -128,15 +128,15 @@ namespace Fourplaces.Models
             HttpResponseMessage response = await client.SendAsync(request);
 
             string result = await response.Content.ReadAsStringAsync();
-            Console.WriteLine("Dev_token:"+SingletonLoginResult.LR.AccessToken);
-            Console.WriteLine("Dev_SCDResponse:" + result);
-            Console.WriteLine("Dev_SCDStatusCode:" + response.StatusCode);
+            //Console.WriteLine("Dev_token:"+SingletonLoginResult.LR.AccessToken);
+            //Console.WriteLine("Dev_SCDResponse:" + result);
+            //Console.WriteLine("Dev_SCDStatusCode:" + response.StatusCode);
             if (response.IsSuccessStatusCode)
             {
                 Response r = JsonConvert.DeserializeObject<Response>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 //return true;
                 /*if (d.is_success)
@@ -183,7 +183,7 @@ namespace Fourplaces.Models
             double lattitudeD;
             double longitudeD;
 
-            Console.WriteLine("Dev_SendPlaceData:lattitude:" + lattitude + "|longitude:" + longitude);
+            //Console.WriteLine("Dev_SendPlaceData:lattitude:" + lattitude + "|longitude:" + longitude);
             try
             {
                 lattitudeD = double.Parse(lattitude, System.Globalization.CultureInfo.InvariantCulture);
@@ -215,7 +215,7 @@ namespace Fourplaces.Models
             cpr.Latitude = lattitudeD;
             cpr.Longitude = longitudeD;
 
-            Console.WriteLine("Dev_SendPlaceData:lattitudeD:" + lattitudeD + "|longitudeD:" + longitudeD+"|imageId:"+cpr.ImageId);
+            //Console.WriteLine("Dev_SendPlaceData:lattitudeD:" + lattitudeD + "|longitudeD:" + longitudeD+"|imageId:"+cpr.ImageId);
 
             var jsonRequest = JsonConvert.SerializeObject(cpr);
 
@@ -229,14 +229,14 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            Console.WriteLine("Dev_RDResponse:" + result);
-            Console.WriteLine("Dev_RDStatusCode:" + response.StatusCode); 
+            //Console.WriteLine("Dev_RDResponse:" + result);
+            //Console.WriteLine("Dev_RDStatusCode:" + response.StatusCode); 
             if (response.IsSuccessStatusCode)
             {
                 Response r  = JsonConvert.DeserializeObject<Response>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 return true;
                 /*if (d.is_success)
@@ -295,8 +295,8 @@ namespace Fourplaces.Models
                 //{
                 //    file = "profileDef.png";
                 //}
-                Console.WriteLine("picture:");
-                Console.WriteLine("picture:" + file);
+                //Console.WriteLine("picture:");
+                //Console.WriteLine("picture:" + file);
                 if (file != null)
                 {
                     var stream = file.GetStream();
@@ -356,16 +356,16 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            Console.WriteLine("Dev_RDResponse:" + result);
-            Console.WriteLine("Dev_RDStatusCode:" + response.StatusCode);
+            //Console.WriteLine("Dev_RDResponse:" + result);
+            //Console.WriteLine("Dev_RDStatusCode:" + response.StatusCode);
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Image uploaded!");
+                //Console.WriteLine("Image uploaded!");
                 Response<ImageItem> r = JsonConvert.DeserializeObject<Response<ImageItem>>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 return r.Data;
             }
@@ -392,7 +392,7 @@ namespace Fourplaces.Models
 
 
 
-            Console.WriteLine("Dev_RegisterData:");
+            //Console.WriteLine("Dev_RegisterData:");
 
 
 
@@ -421,11 +421,11 @@ namespace Fourplaces.Models
                 Barrel.Current.Add(key: "LoginResult", data: result, expireIn: TimeSpan.FromDays(1));
                 Barrel.Current.Empty(key: "Account"); //Test
 
-                Console.WriteLine("Dev_RDResponse:" + result);
+                //Console.WriteLine("Dev_RDResponse:" + result);
                 Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 if (r.IsSuccess) { 
 
@@ -446,7 +446,7 @@ namespace Fourplaces.Models
 
             var uri = new Uri(string.Format(url + "auth/refresh", string.Empty));
 
-            Console.WriteLine("Dev_Refresh:");
+           // Console.WriteLine("Dev_Refresh:");
 
 
 
@@ -469,11 +469,11 @@ namespace Fourplaces.Models
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Dev_RDResponse:" + result);
+                //Console.WriteLine("Dev_RDResponse:" + result);
                 Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 if (r.IsSuccess)
                 {
@@ -505,7 +505,7 @@ namespace Fourplaces.Models
 
 
 
-            Console.WriteLine("Dev_ConnexionData:");
+            //Console.WriteLine("Dev_ConnexionData:");
 
 
             LoginRequest lr = new LoginRequest();
@@ -534,11 +534,11 @@ namespace Fourplaces.Models
                 Barrel.Current.Add(key: "LoginResult", data: result, expireIn: TimeSpan.FromDays(1));
                 Barrel.Current.Empty(key: "Account");
 
-                Console.WriteLine("Dev_CDResponse:" + result);
+               // Console.WriteLine("Dev_CDResponse:" + result);
                 Response<LoginResult> r = JsonConvert.DeserializeObject<Response<LoginResult>>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 if (r.IsSuccess)
                 {
@@ -575,11 +575,11 @@ namespace Fourplaces.Models
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Dev_UDResponse:" + result);
+                //Console.WriteLine("Dev_UDResponse:" + result);
                 Response<UserItem> r = JsonConvert.DeserializeObject<Response<UserItem>>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 if (r.IsSuccess)
                 {
@@ -616,7 +616,7 @@ namespace Fourplaces.Models
 
             var uri = new Uri(string.Format(url + "me", string.Empty));
 
-            Console.WriteLine("Dev_ECA:");
+           // Console.WriteLine("Dev_ECA:");
 
 
             UpdateProfileRequest upr = new UpdateProfileRequest();
@@ -652,16 +652,16 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            Console.WriteLine("Dev_ECAesponse:" + result);
-            Console.WriteLine("Dev_ECAtatusCode:" + response.StatusCode);
+            //Console.WriteLine("Dev_ECAesponse:" + result);
+            //Console.WriteLine("Dev_ECAtatusCode:" + response.StatusCode);
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Dev_ECAResponse:" + result);
+               // Console.WriteLine("Dev_ECAResponse:" + result);
                 Response<UserItem> r = JsonConvert.DeserializeObject<Response<UserItem>>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 if (r.IsSuccess)
                 {
@@ -720,16 +720,16 @@ namespace Fourplaces.Models
 
             string result = await response.Content.ReadAsStringAsync();
 
-            Console.WriteLine("Dev_ECAesponse:" + result);
-            Console.WriteLine("Dev_ECAtatusCode:" + response.StatusCode);
+            //Console.WriteLine("Dev_ECAesponse:" + result);
+            //Console.WriteLine("Dev_ECAtatusCode:" + response.StatusCode);
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Dev_ECAResponse:" + result);
+               // Console.WriteLine("Dev_ECAResponse:" + result);
                 Response<UserItem> r = JsonConvert.DeserializeObject<Response<UserItem>>(result);
-                Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
-                Console.WriteLine("Dev_error_code:" + r.ErrorCode);
-                Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
+                //Console.WriteLine("Dev_is_sucess:" + r.IsSuccess);
+                //Console.WriteLine("Dev_error_code:" + r.ErrorCode);
+                //Console.WriteLine("Dev_error_message:" + r.ErrorMessage);
 
                 if (r.IsSuccess)
                 {
@@ -755,7 +755,7 @@ namespace Fourplaces.Models
 
             if (Barrel.Current.Exists(uri.ToString())) //cache exist already
             {
-                Console.WriteLine("Dev_Exists:"+uri.ToString());
+               // Console.WriteLine("Dev_Exists:"+uri.ToString());
                 var content = Barrel.Current.Get<byte[]>(key: uri.ToString());
 
                 ImageSource ims = ImageSource.FromStream(() => new MemoryStream(content));
@@ -764,21 +764,21 @@ namespace Fourplaces.Models
             }
             else //download image
             {
-                Console.WriteLine("Dev_GetRequestImage:" + id);
+               // Console.WriteLine("Dev_GetRequestImage:" + id);
 
 
 
 
                 var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-                Console.WriteLine("Dev_GetRequestImageNothing");
-                Console.WriteLine("Dev_GetRequestImageGetURI:" + response.StatusCode);
-                Console.WriteLine("Dev_GetRequestImageStatus:" + response.IsSuccessStatusCode);
+                //Console.WriteLine("Dev_GetRequestImageNothing");
+                //Console.WriteLine("Dev_GetRequestImageGetURI:" + response.StatusCode);
+                //Console.WriteLine("Dev_GetRequestImageStatus:" + response.IsSuccessStatusCode);
 
                 if (response.IsSuccessStatusCode)
                 {
                     byte[] content = await response.Content.ReadAsByteArrayAsync();
 
-                    Console.WriteLine("Dev_ImageAll:");
+                    //Console.WriteLine("Dev_ImageAll:");
 
                     ImageSource ims = ImageSource.FromStream(() => new MemoryStream(content));
 
@@ -808,21 +808,21 @@ namespace Fourplaces.Models
             }
             else //download image
             {
-                Console.WriteLine("Dev_GetRequestImageProfil:" + id);
+                //Console.WriteLine("Dev_GetRequestImageProfil:" + id);
 
 
 
 
                 var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-                Console.WriteLine("Dev_GetRequestImageProfilNothing");
-                Console.WriteLine("Dev_GetRequestImageProfilGetURI:" + response.StatusCode);
-                Console.WriteLine("Dev_GetRequestImageProfilStatus:" + response.IsSuccessStatusCode);
+                //Console.WriteLine("Dev_GetRequestImageProfilNothing");
+                //Console.WriteLine("Dev_GetRequestImageProfilGetURI:" + response.StatusCode);
+                //Console.WriteLine("Dev_GetRequestImageProfilStatus:" + response.IsSuccessStatusCode);
 
                 if (response.IsSuccessStatusCode)
                 {
                     byte[] content = await response.Content.ReadAsByteArrayAsync();
 
-                    Console.WriteLine("Dev_ImageAll:");
+                    //Console.WriteLine("Dev_ImageAll:");
 
                     ImageSource ims = ImageSource.FromStream(() => new MemoryStream(content));
 
@@ -846,7 +846,7 @@ namespace Fourplaces.Models
         {
             if(Barrel.Current.Exists("LoginResult") && firstCo)
             {
-                Console.WriteLine("Dev_refreshForCache");
+                //Console.WriteLine("Dev_refreshForCache");
                 await RefreshAsync();
             }
 
@@ -862,7 +862,7 @@ namespace Fourplaces.Models
             }
             //Console.WriteLine("Dev_OldconnectedToken:" + SingletonLoginResult.LR.AccessToken);
             //await RefreshAsync();
-            Console.WriteLine("Dev_connectedToken:" + SingletonLoginResult.LR.AccessToken);
+            //Console.WriteLine("Dev_connectedToken:" + SingletonLoginResult.LR.AccessToken);
             if (SingletonLoginResult.LR.IsExpired())
             {
                 await RefreshAsync();
@@ -890,7 +890,7 @@ namespace Fourplaces.Models
             }
             catch (WebException ex)
             {
-                Console.WriteLine("Dev_checkCo:"+ex.Message); 
+                //Console.WriteLine("Dev_checkCo:"+ex.Message); 
 
                 //throw new AuthenticationException("vous n'êtes pas connecté à internet");
                 throw new NoConnectE("vous n'êtes pas connecté à internet");
@@ -915,7 +915,7 @@ namespace Fourplaces.Models
             }
             catch (WebException ex)
             {
-                Console.WriteLine("Dev_checkCo:" + ex.Message);
+                //Console.WriteLine("Dev_checkCo:" + ex.Message);
 
                 //throw new AuthenticationException(urlSave,0);
                 throw new NoConnectE(urlSave, "vous n'êtes pas connecté à internet");

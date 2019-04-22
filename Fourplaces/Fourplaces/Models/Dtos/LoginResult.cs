@@ -27,7 +27,7 @@ namespace TD.Api.Dtos
 
             set
             {
-                Console.WriteLine("Dev_expiredIn:"+value);
+                //Console.WriteLine("Dev_expiredIn:"+value);
                 SetProperty(ref _expiresIn, value);
                 _dateExpiresTo = DateTime.Now.AddSeconds(value);
 
@@ -45,12 +45,12 @@ namespace TD.Api.Dtos
             TimeSpan span = _dateExpiresTo.Subtract(now);
             if(span<= TimeSpan.Zero)
             {
-                Console.WriteLine("Dev_expired:it's over");
+                //Console.WriteLine("Dev_expired:it's over");
                 return true;
             }
             else
             {
-                Console.WriteLine("Dev_staying:" + span.TotalSeconds);
+                //Console.WriteLine("Dev_staying:" + span.TotalSeconds);
                 return false;
             }
 

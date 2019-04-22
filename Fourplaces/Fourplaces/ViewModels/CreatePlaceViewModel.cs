@@ -240,17 +240,17 @@ namespace Fourplaces.ViewModels
             catch (NoConnectE e)
             {
                 EXCEPTION = e.ExceptionMess;
-                Console.WriteLine("Dev_Exception:" + EXCEPTION);
+               // Console.WriteLine("Dev_Exception:" + EXCEPTION);
             }
             catch (AddPlaceE e)
             {
                 EXCEPTION = e.ExceptionMess;
-                Console.WriteLine("Dev_Exception:" + EXCEPTION);
+                //Console.WriteLine("Dev_Exception:" + EXCEPTION);
             }
             catch (Exception e)
             {
                 EXCEPTION = e.Message;
-                Console.WriteLine("Dev_Exception:" + EXCEPTION);
+                //Console.WriteLine("Dev_Exception:" + EXCEPTION);
             }
 
 

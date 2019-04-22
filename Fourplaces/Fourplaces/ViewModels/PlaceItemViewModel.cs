@@ -35,7 +35,7 @@ namespace Fourplaces.ViewModels
 
             set
             {
-                Console.WriteLine("SETIDDD:"+value.Id);
+                //Console.WriteLine("SETIDDD:"+value.Id);
                 SetProperty(ref pis, value);
                 //Task t = FindPlaceItem(pis.Id); //LATER MAYBE USE IT BECAUSE WITH ONRESUME TO LONG TO SWITCH PAGE
 
@@ -154,7 +154,7 @@ namespace Fourplaces.ViewModels
 
         private async Task FindPlaceItem(int id)
         {
-            Console.WriteLine("Dev_FPI_BIS");
+            //Console.WriteLine("Dev_FPI_BIS");
 
             try
             {
@@ -196,7 +196,7 @@ namespace Fourplaces.ViewModels
             //catch (AuthenticationException ae) //no connected
             catch (NoConnectE e) //no connected
             {
-                Console.WriteLine("DEV_EXCEPTIONIMAGE:" + EXCEPTION);
+                //Console.WriteLine("DEV_EXCEPTIONIMAGE:" + EXCEPTION);
                 String url = e.urlSave;
                 IMAGEP = SingletonRestService.RS.CacheImage(url);
 
@@ -207,7 +207,7 @@ namespace Fourplaces.ViewModels
 
 
 
-        Console.WriteLine("Dev_IDResponse:" + pi.Id);
+        //Console.WriteLine("Dev_IDResponse:" + pi.Id);
 
 
         }
@@ -239,7 +239,7 @@ namespace Fourplaces.ViewModels
             try
             {
                 //Initialize(new Dictionary<string, object> { "test":"testE"})
-                Console.WriteLine("Dev_Comm:" + PI.Id + "|" + INPUTCOM);
+                //Console.WriteLine("Dev_Comm:" + PI.Id + "|" + INPUTCOM);
                 await SingletonRestService.RS.SendCommentDataAsync(PI.Id, INPUTCOM);
                 //Console.WriteLine("Dev_OnResumeBef:" + PIS.Id);
                 await OnResume();
@@ -262,7 +262,7 @@ namespace Fourplaces.ViewModels
 
         public async Task getImage()
         {
-            Console.WriteLine("Dev_getImage");
+            //Console.WriteLine("Dev_getImage");
             IMAGEP = await SingletonRestService.RS.GetRequestImage(PI.ImageId);
 
 

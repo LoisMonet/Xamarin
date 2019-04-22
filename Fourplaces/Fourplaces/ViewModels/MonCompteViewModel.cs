@@ -24,7 +24,7 @@ namespace Fourplaces.ViewModels
         {
             if (SingletonLoginResult.LR != null)
             {
-                Console.WriteLine("Dev_MCVM" + SingletonLoginResult.LR.AccessToken);
+               // Console.WriteLine("Dev_MCVM" + SingletonLoginResult.LR.AccessToken);
             }
 
 
@@ -109,13 +109,13 @@ namespace Fourplaces.ViewModels
 
         async private void EditCompte()
         {
-            Console.WriteLine("EditCompte");
+           // Console.WriteLine("EditCompte");
             await NavigationService.PushAsync<MonCompteEdit>(new Dictionary<string, object>() { { "USER", USER } });
         }
 
         async private void EditMDP()
         {
-            Console.WriteLine("EditMdp");
+            //Console.WriteLine("EditMdp");
             await NavigationService.PushAsync<MonMDPEdit>();
         }
 

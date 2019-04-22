@@ -53,14 +53,14 @@ namespace Fourplaces.ViewModels
         public async void SendConnexion()
         {
 
-            Console.WriteLine("Dev_Send:" + Email + "|" + MDP);
+           // Console.WriteLine("Dev_Send:" + Email + "|" + MDP);
 
 
             try
             {
                 lr = await SingletonRestService.RS.ConnexionDataAsync(Email, MDP);
 
-                Console.WriteLine("Dev_CDAccessToken:" + lr.AccessToken);
+               // Console.WriteLine("Dev_CDAccessToken:" + lr.AccessToken);
                 SingletonLoginResult.destroyLR();
                 SingletonLoginResult.LR = lr;
                 await NavigationService.PopAsync();

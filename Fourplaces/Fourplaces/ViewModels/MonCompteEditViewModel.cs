@@ -21,6 +21,7 @@ namespace Fourplaces.ViewModels
 
         private bool typeP=false;
         private string exception;
+        private string _reussi;
 
         //private String imageId;
 
@@ -50,6 +51,19 @@ namespace Fourplaces.ViewModels
             }
         }
 
+        public String Reussi
+        {
+            get
+            {
+                return _reussi;
+            }
+
+            set
+            {
+                SetProperty(ref _reussi, value);
+            }
+        }
+
 
 
         [NavigationParameter]
@@ -62,7 +76,7 @@ namespace Fourplaces.ViewModels
             }
             set
             {
-                Console.WriteLine("mcevm:" + value.FirstName);
+                //Console.WriteLine("mcevm:" + value.FirstName);
                 SetProperty(ref _user, value);
                 IMAGE = USER.SOURCEIMAGE;
                 //IMAGEID=USER.ImageId.ToString();
@@ -137,12 +151,14 @@ namespace Fourplaces.ViewModels
 
         async private void Editer()
         {
-
+            EXCEPTION = "";
+            Reussi = "";
             //USER.ImageId = int.Parse(IMAGEID, System.Globalization.CultureInfo.InvariantCulture);
             try
             {
-                Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName + "|");
+               // Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName + "|");
                 await SingletonRestService.RS.EditCountAsync(USER.FirstName, USER.LastName, USER.ImageId, imageB);
+                Reussi = "Modification effectuée";
             }
             //catch(AuthenticationException ae)
             catch (NoConnectE e)
@@ -168,7 +184,7 @@ namespace Fourplaces.ViewModels
             {
                 IMAGE = ImageSource.FromStream(() => new MemoryStream(imageB));
             }
-            Console.WriteLine("Dev_ChoosePicture");
+           // Console.WriteLine("Dev_ChoosePicture");
         }
 
     }

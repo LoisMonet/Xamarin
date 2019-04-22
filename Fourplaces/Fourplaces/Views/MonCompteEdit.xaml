@@ -19,6 +19,7 @@
 <!--            <Entry Text="{Binding IMAGEID}" Placeholder="Image id" />
 -->         <Button Text="modifier" Command="{Binding EDITER}"/>
             <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
+            <Label Text="{Binding Reussi}" TextColor="Green"/>
         </StackLayout>    
             
         
