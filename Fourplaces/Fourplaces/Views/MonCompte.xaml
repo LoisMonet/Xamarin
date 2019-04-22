@@ -16,10 +16,10 @@
             
             
             <StackLayout Orientation="Horizontal">
-                  <Button Text="Editer compte" Command="{Binding EDITCOMPTE}"/>
-                  <Button Text="editer mdp" Command="{Binding EDITMDP}"/>
+                  <Button Text="Editer compte" Command="{Binding EDITCOMPTE}" IsVisible="{Binding IsVisible}"/>
+                  <Button Text="editer mdp" Command="{Binding EDITMDP}" IsVisible="{Binding IsVisible}"/>
             </StackLayout>   
-         
+            <Label Text="{Binding EXCEPTION}" TextColor="Red"/>
             
             
         </StackLayout>

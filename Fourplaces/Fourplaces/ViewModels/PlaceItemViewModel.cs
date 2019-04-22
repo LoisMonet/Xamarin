@@ -154,16 +154,60 @@ namespace Fourplaces.ViewModels
 
         private async Task FindPlaceItem(int id)
         {
-            Console.WriteLine("Dev_FPI");
+            Console.WriteLine("Dev_FPI_BIS");
+
+            try
+            {
+                PI = await SingletonRestService.RS.PlaceItemDataAsync(id);
+                CreateMap();
+            }
+            //catch (AuthenticationException ae) //no connected
+            catch (NoConnectE e) //no connected
+            {
+                EXCEPTION = e.ExceptionMess;
+                //Console.WriteLine("DEV_EXCEPTION:" + EXCEPTION);
+                String url = e.urlSave;
+                PI = SingletonRestService.RS.CacheData<PlaceItem>(url);
+                if (PI != null)
+                {
+                    CreateMap();
+                }
+
+                if (SingletonLoginResult.LR != null)
+                {
+                    //Console.WriteLine("ISVISIBLETR:"+(PI == null));
+                    if (PI == null)
+                    {
+                        //Console.WriteLine("ISVISIBLETRUE1");
+                        IsVisible = false;
+                    }
+                    else
+                    {
+                        //Console.WriteLine("ISVISIBLETRUE2:");
+                        IsVisible = true;
+                    }
+                }
+            }
+
+            try
+            {
+                await getImage();
+            }
+            //catch (AuthenticationException ae) //no connected
+            catch (NoConnectE e) //no connected
+            {
+                Console.WriteLine("DEV_EXCEPTIONIMAGE:" + EXCEPTION);
+                String url = e.urlSave;
+                IMAGEP = SingletonRestService.RS.CacheImage(url);
+
+            }
 
 
-            PI = await SingletonRestService.RS.PlaceItemDataAsync(id);
-            CreateMap();
-            await getImage();
 
 
 
-            Console.WriteLine("Dev_IDResponse:" + pi.Id);
+
+        Console.WriteLine("Dev_IDResponse:" + pi.Id);
 
 
         }
@@ -196,14 +240,20 @@ namespace Fourplaces.ViewModels
             {
                 //Initialize(new Dictionary<string, object> { "test":"testE"})
                 Console.WriteLine("Dev_Comm:" + PI.Id + "|" + INPUTCOM);
-                await SingletonRestService.RS.SendCommentDataAsync(PI.Id, INPUTCOM, SingletonLoginResult.LR);
+                await SingletonRestService.RS.SendCommentDataAsync(PI.Id, INPUTCOM);
                 //Console.WriteLine("Dev_OnResumeBef:" + PIS.Id);
                 await OnResume();
             }
-            catch (AuthenticationException ae)
+            //catch (AuthenticationException ae)
+            catch (NoConnectE e) //no connected
             {
 
-                EXCEPTION=ae.ExceptionMess;
+                EXCEPTION=e.ExceptionMess;
+            }
+            catch (Exception e)
+            {
+
+                EXCEPTION = e.Message;
             }
 
 
@@ -221,18 +271,24 @@ namespace Fourplaces.ViewModels
 
         public override Task OnResume()
         {
+            if (SingletonLoginResult.LR != null)
+            {
+                IsVisible = true;
+
+            }
+            else
+            {
+                //Console.WriteLine("ISVISIBLETRUE3");
+                IsVisible = false;
+            }
+
             //Console.WriteLine("Dev_OnResume:" +PIS.Id);
             INPUTCOM = "";
             Task t = FindPlaceItem(PIS.Id); //Work on that later
 
-            if (SingletonLoginResult.LR != null)
-            {
-                IsVisible = true;
-            }
-            else
-            {
-                IsVisible = false;
-            }
+
+
+
 
             return base.OnResume();
         }

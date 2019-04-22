@@ -211,16 +211,19 @@ namespace Fourplaces.ViewModels
 
             try
             {
-                String latMod=LATITUDE;
-                String longMod=LONGITUDE;
-                latMod=latMod.Replace(" ", "");
-                latMod=latMod.Replace(",", ".");
-                longMod = longMod.Replace(" ", "");
-                longMod = longMod.Replace(",", ".");
+                String latMod = LATITUDE;
+                String longMod = LONGITUDE;
+                if (!(string.IsNullOrEmpty(latMod)) && !(string.IsNullOrEmpty(longMod)))
+                { 
+                
+                    latMod = latMod.Replace(" ", "");
+                    latMod = latMod.Replace(",", ".");
+                    longMod = longMod.Replace(" ", "");
+                    longMod = longMod.Replace(",", ".");
 
-                Console.WriteLine("Dev_Send:" + NOM + "|" + DESCRIPTION + "|" + IMAGE + "|" + latMod + "|" + longMod);
+                    Console.WriteLine("Dev_Send:" + NOM + "|" + DESCRIPTION + "|" + IMAGE + "|" + latMod + "|" + longMod);
 
-
+                }
 
 
                 bool send = await SingletonRestService.RS.SendPlaceDataAsync(NOM, DESCRIPTION, latMod, longMod, imageB, SingletonLoginResult.LR);
@@ -232,11 +235,24 @@ namespace Fourplaces.ViewModels
 
                
 
-            }catch(AuthenticationException ae)
+            }
+            //catch(AuthenticationException ae)
+            catch (NoConnectE e)
             {
-                EXCEPTION = ae.ExceptionMess;
+                EXCEPTION = e.ExceptionMess;
                 Console.WriteLine("Dev_Exception:" + EXCEPTION);
             }
+            catch (AddPlaceE e)
+            {
+                EXCEPTION = e.ExceptionMess;
+                Console.WriteLine("Dev_Exception:" + EXCEPTION);
+            }
+            catch (Exception e)
+            {
+                EXCEPTION = e.Message;
+                Console.WriteLine("Dev_Exception:" + EXCEPTION);
+            }
+
 
         }
 

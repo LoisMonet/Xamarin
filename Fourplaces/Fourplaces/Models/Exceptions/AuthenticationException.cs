@@ -5,11 +5,11 @@ namespace Fourplaces.Models.Exceptions
     {
 
         private String exceptionMess;
+        public string urlSave;
 
-
-        public AuthenticationException(String email, String mdp)
+        //ConnexionE(String email, String mdp)
+        public AuthenticationException(String email, String mdp) 
         {
-            
             if (email == "")
             {
                 exceptionMess += "le champ email est vide";
@@ -22,8 +22,10 @@ namespace Fourplaces.Models.Exceptions
             
         }
 
+        //EditCompteE(String fName, String lName)
         public AuthenticationException(String fName, String lName,int useless) //SEE AGAIN EXCEPTION
         {
+
 
             if (fName == "")
             {
@@ -37,6 +39,7 @@ namespace Fourplaces.Models.Exceptions
 
         }
 
+        //PwdCompteE(String opw, String npw)
         public AuthenticationException(String opw, String npw, bool useless) //SEE AGAIN EXCEPTION
         {
 
@@ -52,7 +55,7 @@ namespace Fourplaces.Models.Exceptions
 
         }
 
-
+        //RegisterE(String email, String mdp,String fName,String lName )
         public AuthenticationException(String email, String mdp,String fName,String lName )
         {
 
@@ -77,6 +80,8 @@ namespace Fourplaces.Models.Exceptions
 
 
         }
+
+        //AddPlaceE(tring nLieu,String desc, String lat, String longi)
 
         //USE imageID field else I have currently two method with the same number of parameters
         public AuthenticationException(String nLieu,String desc, String lat, String longi,int useless) //SEE AGAIN EXCEPTION
@@ -108,6 +113,7 @@ namespace Fourplaces.Models.Exceptions
 
         }
 
+        //LatLongValE(double lat, double longi)
         public AuthenticationException(double lat, double longi)
         {
             if(lat.Equals(0) || longi.Equals(0))
@@ -130,10 +136,21 @@ namespace Fourplaces.Models.Exceptions
 
         }
 
-            public AuthenticationException(String message)
+        //OtherE(String message)
+        public AuthenticationException(String message)
         {
             exceptionMess = message;
         }
+
+        //NoConnectCacheE(String url,float a)
+        public AuthenticationException(String url,float a) //no connect for cache
+        {
+            exceptionMess = "vous n'êtes pas connecté à internet";
+            urlSave = url;
+
+
+        }
+
 
 
         public String ExceptionMess
@@ -143,6 +160,7 @@ namespace Fourplaces.Models.Exceptions
                 return exceptionMess;
             }
         }
+
 
     }
 }

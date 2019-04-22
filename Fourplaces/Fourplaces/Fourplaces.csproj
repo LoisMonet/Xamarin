@@ -16,6 +16,7 @@
     <PackageReference Include="Xamarin.Forms.Maps" Version="3.6.0.264807" />
     <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
+    <PackageReference Include="MonkeyCache.SQLite" Version="1.2.0-beta" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />

@@ -68,12 +68,17 @@ namespace Fourplaces.ViewModels
 
                 }
             }
-            catch(AuthenticationException ae)
+            //catch(AuthenticationException ae)
+            catch (NoConnectE e)
             {
-                EXCEPTION = ae.ExceptionMess;
+                EXCEPTION = e.ExceptionMess;
+            }
+            catch (RegisterE e)
+            {
+                EXCEPTION = e.ExceptionMess;
             }
 
-            
+
 
 
 

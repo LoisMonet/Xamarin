@@ -25,6 +25,7 @@ namespace Fourplaces.ViewModels
 
         public String NPWD { get; set; }
 
+
         public Command EDITER
         {
             get
@@ -53,9 +54,18 @@ namespace Fourplaces.ViewModels
             {
                 await SingletonRestService.RS.EditPWAsync(OPWD, NPWD);
             }
-            catch(AuthenticationException ae)
+            //catch(AuthenticationException ae)
+            catch (NoConnectE e)
             {
-                EXCEPTION = ae.ExceptionMess;
+                EXCEPTION = e.ExceptionMess;
+            }
+            catch (PwdCompteE e)
+            {
+                EXCEPTION = e.ExceptionMess;
+            }
+            catch (Exception e)
+            {
+                EXCEPTION = e.Message;
             }
 
         }

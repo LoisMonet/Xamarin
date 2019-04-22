@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Api.Dtos;
 using Fourplaces.Models;
 using Fourplaces.Models.Exceptions;
 using Fourplaces.Views;
+using MonkeyCache.SQLite;
 using Newtonsoft.Json;
 using Plugin.Geolocator;
 using Storm.Mvvm;
@@ -130,8 +132,22 @@ namespace Fourplaces.ViewModels
 
         public MainViewModel()
         {
-            //Console.WriteLine("MainViewModel");
-           
+            Console.WriteLine("MainViewModelConstruct");
+
+            Barrel.ApplicationId = "FOURPLACESID";
+
+            if (Barrel.Current.Exists("LoginResult"))
+            {
+                Console.WriteLine("Dev_AlreadyConnected");
+                SingletonLoginResult.LR = SingletonRestService.RS.CacheData<LoginResult>("LoginResult");
+
+
+
+            }
+
+
+
+
             //Task t= FindData();
 
             //if (SingletonLoginResult.LR != null)
@@ -147,65 +163,81 @@ namespace Fourplaces.ViewModels
 
         }
 
-
-            public async Task FindData()
+        public async Task RefreshTokenCache()
         {
+            await SingletonRestService.RS.RefreshAsync();
+        }
+
+
+        public async Task FindData()
+        {
+            List<PlaceItemSummary> listprov;
+
             try
             {
                 Console.WriteLine("Dev_FD");
                 //lpis = await rs.RefreshDataAsync();
-                List<PlaceItemSummary> listprov = await SingletonRestService.RS.RefreshDataAsync();
-
-                try
-                {
-                    posCurr = await GetLocationAsync();
-
-                    Console.WriteLine("Dev_SORTGO:" + posCurr.Latitude + "|" + posCurr.Longitude);
-                    LPIS = sortDistLPIS(listprov);
-                    //Dictionary<int, double> dico=new Dictionary<int, double>();
-                    //List<double,PlaceItemSummary> l = new List<double>();
-                    /*foreach (PlaceItemSummary pis in LPIS)
-                    {
-                        Position posPlace = new Position(pis.Latitude, pis.Longitude);
-                        Distance d = DistanceBetweenPoints(posCurr, posPlace);
-                        Console.WriteLine("Dev_Dist:" + pis.Title + "|" + d.Kilometers);
-                        //l.Add(d.Kilometers);
-                        dico.Add(pis.Id, d.Kilometers);
+                listprov = await SingletonRestService.RS.RefreshDataAsync();
 
 
-                    }
-
-                    //var list= dico.Keys.ToList();
-
-                    var items=from pair in dico
-                              orderby pair.Value ascending
-                              select pair;
-
-                    foreach (KeyValuePair<int, double> pair in items)
-                    {
-                        Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
-                    }*/
-
-
-
-
-
-                    /*foreach(double d in l)
-                    {
-                        Console.WriteLine("Dev_DistSort:"+d);
-                    }*/
-                    
-                    //OnPropertyChanged("LPIS");
-                }
-                catch (AuthenticationException ae)
-                {
-
-                    EXCEPTION = ae.ExceptionMess;
-                    LPIS = listprov;
-                }
-            }catch(AuthenticationException ae)
+            }
+            //catch(AuthenticationException ae) //no connected
+            catch (NoConnectE e) //no connected
             {
-                EXCEPTION = ae.ExceptionMess;
+
+                String url = e.urlSave;
+                listprov= SingletonRestService.RS.CacheData<List<PlaceItemSummary>>(url);
+
+                EXCEPTION = e.ExceptionMess;
+            }
+
+            try
+            {
+                posCurr = await GetLocationAsync();
+
+                Console.WriteLine("Dev_SORTGO:" + posCurr.Latitude + "|" + posCurr.Longitude);
+                LPIS = sortDistLPIS(listprov);
+                //Dictionary<int, double> dico=new Dictionary<int, double>();
+                //List<double,PlaceItemSummary> l = new List<double>();
+                /*foreach (PlaceItemSummary pis in LPIS)
+                {
+                    Position posPlace = new Position(pis.Latitude, pis.Longitude);
+                    Distance d = DistanceBetweenPoints(posCurr, posPlace);
+                    Console.WriteLine("Dev_Dist:" + pis.Title + "|" + d.Kilometers);
+                    //l.Add(d.Kilometers);
+                    dico.Add(pis.Id, d.Kilometers);
+
+
+                }
+
+                //var list= dico.Keys.ToList();
+
+                var items=from pair in dico
+                          orderby pair.Value ascending
+                          select pair;
+
+                foreach (KeyValuePair<int, double> pair in items)
+                {
+                    Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
+                }*/
+
+
+
+
+
+                /*foreach(double d in l)
+                {
+                    Console.WriteLine("Dev_DistSort:"+d);
+                }*/
+
+                //OnPropertyChanged("LPIS");
+            }
+            //catch (AuthenticationException ae) //no geo
+            catch (Exception e) //no geo
+            {
+
+                EXCEPTION = e.Message;
+                LPIS = listprov;
             }
 
 
@@ -224,7 +256,7 @@ namespace Fourplaces.ViewModels
                 var locator = CrossGeolocator.Current;
                 locator.DesiredAccuracy = 100;
 
-                var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(5));
+                var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(5)); //SEE AGAIN
                 positionUser = position;
                 //positionUser = null;
 
@@ -252,7 +284,9 @@ namespace Fourplaces.ViewModels
             {
                 //textLocation.Text = "Unable to get location: " + ex.ToString();
                 Console.WriteLine("DevLoc_Unable to get location: " + ex.ToString());
-                throw new AuthenticationException("impossible d'obtenir une localisation gps");
+
+                //throw new AuthenticationException("impossible d'obtenir une localisation gps");
+                throw new Exception("impossible d'obtenir une localisation gps");
 
             }
         }
@@ -277,7 +311,6 @@ namespace Fourplaces.ViewModels
             distance = 2 * EARTH_RADIUS_KM * Math.Atan2(Math.Sqrt(distance), Math.Sqrt(1 - distance));
 
             return Distance.FromKilometers(distance);
-            
         }
 
         double DegreesToRadians(double degrees)
@@ -391,6 +424,8 @@ namespace Fourplaces.ViewModels
             Console.WriteLine("MainViewModel");
 
             Task t = FindData();
+
+            
 
             if (SingletonLoginResult.LR != null)
             {

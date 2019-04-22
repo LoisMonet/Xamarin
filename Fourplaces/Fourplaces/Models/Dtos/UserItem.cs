@@ -1,5 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Newtonsoft.Json;
 using Storm.Mvvm;
 using Xamarin.Forms;
@@ -44,10 +46,24 @@ namespace TD.Api.Dtos
 
         public async Task GetImageResource()
         {
-            if (SourceImage == null)
+            try
             {
-                SOURCEIMAGE = await SingletonRestService.RS.GetRequestImage(ImageId);
+                if (SourceImage == null)
+                {
+                    SOURCEIMAGE = await SingletonRestService.RS.GetRequestImageProfil(ImageId);
+                }
             }
+            catch (NoConnectE e) //not connected
+            {
+                if (SourceImage == null)
+                {
+                    String url = e.urlSave;
+
+                    SOURCEIMAGE = SingletonRestService.RS.CacheImage(url);
+
+                }
+            }
+
         }
     }
 

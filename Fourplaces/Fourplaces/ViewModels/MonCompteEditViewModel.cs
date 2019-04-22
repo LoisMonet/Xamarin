@@ -144,11 +144,20 @@ namespace Fourplaces.ViewModels
                 Console.WriteLine("EditTest:" + USER.FirstName + "|" + USER.LastName + "|");
                 await SingletonRestService.RS.EditCountAsync(USER.FirstName, USER.LastName, USER.ImageId, imageB);
             }
-            catch(AuthenticationException ae)
+            //catch(AuthenticationException ae)
+            catch (NoConnectE e)
             {
-                EXCEPTION = ae.ExceptionMess;
+                EXCEPTION = e.ExceptionMess;
             }
-           
+            catch (EditCompteE e)
+            {
+                EXCEPTION = e.ExceptionMess;
+            }
+            catch (Exception e)
+            {
+                EXCEPTION = e.Message;
+            }
+
         }
 
         public async void ChoosePicture()

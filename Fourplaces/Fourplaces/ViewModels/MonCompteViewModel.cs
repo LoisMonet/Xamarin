@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fourplaces.Models;
+using Fourplaces.Models.Exceptions;
 using Fourplaces.Views;
 using Storm.Mvvm;
 using TD.Api.Dtos;
@@ -16,8 +17,8 @@ namespace Fourplaces.ViewModels
         private Command _editMDP;
         //private ImageSource imageP;
         private UserItem _user;
-
-
+        private string exception;
+        private bool _isVisible;
 
         public MonCompteViewModel()
         {
@@ -49,7 +50,18 @@ namespace Fourplaces.ViewModels
                 SetProperty(ref imageP, value);
             }
         }*/
+        public String EXCEPTION
+        {
+            get
+            {
+                return exception;
+            }
 
+            set
+            {
+                SetProperty(ref exception, value);
+            }
+        }
 
         public UserItem USER
         {
@@ -81,6 +93,20 @@ namespace Fourplaces.ViewModels
             }
         }
 
+        public Boolean IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                SetProperty(ref _isVisible, value);
+            }
+        }
+
+
         async private void EditCompte()
         {
             Console.WriteLine("EditCompte");
@@ -95,9 +121,28 @@ namespace Fourplaces.ViewModels
 
         public async Task DataUser()
         {
-           USER=await SingletonRestService.RS.UserDataAsync();
-           /*Task t=getImage();*/
-           
+            try
+            {
+                USER = await SingletonRestService.RS.UserDataAsync();
+            }
+            //catch(AuthenticationException ae) //no connected
+            catch (NoConnectE e) //no connected
+            {
+                EXCEPTION = e.ExceptionMess;
+                USER= SingletonRestService.RS.CacheData<UserItem>("Account");
+            }
+
+            if (USER == null)
+            {
+                IsVisible = false;
+            }
+            else
+            {
+                IsVisible = true;
+            }
+
+            /*Task t=getImage();*/
+
 
 
         }
